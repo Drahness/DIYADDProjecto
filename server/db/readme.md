@@ -33,6 +33,8 @@ ASIX i DAM)
 
 ## Solucion
 
+Crear las tablas Usuaris, Asignaturas, Alumnes, Docencia, Profesores, Departamentos y Mensajes.
+
 ## Esquemas
 
 La herramienta que estoy utilizando no me permite representar especializaciones, la tabla ```Usuaris``` tiene como especializaciones las tablas ```Alumnes``` y ```Profesores```.
