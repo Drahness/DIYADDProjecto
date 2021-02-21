@@ -2,7 +2,7 @@
   <q-item
     clickable
     tag="a"
-
+    target=""
     :href="link"
   >
     <q-item-section
@@ -35,7 +35,7 @@ export default {
       default: ''
     },
 
-    to: {
+    link: {
       type: String,
       default: '#'
     },

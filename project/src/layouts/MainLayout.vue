@@ -55,13 +55,19 @@ const linksData = [
     title: 'Login',
     caption: '',
     icon: 'school',
-    to: '/#/Login'
+    link: '#/login'
+  },
+  {
+    title: 'Registre',
+    caption: '',
+    icon: 'school',
+    link: '#/register'
   },
   {
     title: 'About',
     caption: '',
     icon: 'favorite',
-    to: '/i'
+    link: '#/about'
   }
 ]
 
