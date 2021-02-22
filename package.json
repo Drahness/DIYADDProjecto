@@ -17,7 +17,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start_server": "node server/index.js",
-    "test_user_dao": "node server/db/models/Users.js"
+    "test_user_dao": "node server/db/models/Users.js",
+    "test_profe_dao": "node server/db/models/Profes.js",
+    "test_alumne_dao": "node server/db/models/Alumnes.js"
   },
   "repository": {
     "type": "git",

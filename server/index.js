@@ -1,12 +1,15 @@
 const express = require("express");
 const app = express();
-
+const login = require("./routers/login")
+const register = require("./routers/register")
 const fs = require("fs");
 const https = require("https");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const port = 1234;
+const accessTokenSecret = "laParaulaSecretaDelServidor";
 
+// quitar
 const middleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
         if (authHeader) {
@@ -21,30 +24,10 @@ const middleware = (req, res, next) => {
             next();
         });
     } else {
-        // no està. contestem directament al client amb un error 401(unauthorized);
-        res.sendStatus(401);
+        res.sendStatus(401); // error 401(unauthorized);
     }
 };
 
-users = [
-    {
-        username: "Joan",
-        password: "1234",
-        admin: true,
-    },
-    {
-        username: "user",
-        password: "1234",
-        admin: false,
-    },
-];
-
-const checkUser = (username, password) => {
-    const user = users.find((u) => {
-        return u.username === username && u.password === password;
-    });
-    return user
-}
 https
     .createServer(
         {
@@ -55,7 +38,6 @@ https
     )
     .listen(port, () => console.log("Escuchando en puerto: ", port));
 
-const accessTokenSecret = "laParaulaSecretaDelServidor";
 
 app.use(bodyParser.json());
 app.get("/users", middleware, (req, res) => {
@@ -73,25 +55,5 @@ app.get("/", (req, res) => {
     res.send("aaaa");
 });
 
-app.post("/login", (req, res) => {
-    console.log("in post");
-    const { username, password } = req.body;
-    console.log(req.body);
-    const user = users.find((u) => { // matcheamos el user y la pass
-        return u.username === username && u.password === password;
-    });
-    if (user) { // si user no es undefined
-        // Generarem el token
-        const accessToken = jwt.sign(
-            { username: user.username, role: user.role },
-            accessTokenSecret
-        );
-        // carreguem el la resposta el jwt que hem generat
-        res.json({
-            accessToken,
-        });
-    } else {
-        res.status(401)
-        res.send("Username or password incorrect");
-    }
-});
+app.use("/login", login.router)
+app.use("/register", register.router)
