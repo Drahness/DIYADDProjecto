@@ -9,8 +9,7 @@ const port = 1234;
 
 const middleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
-    console.log("in middleware")
-    if (authHeader) {
+        if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, accessTokenSecret, (err, user) => {
             if (err) {
@@ -75,16 +74,13 @@ app.get("/", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    // procesamos request
-    // Llegim username and password des del cos
     console.log("in post");
     const { username, password } = req.body;
     console.log(req.body);
-    // Filtrem de l'array d'usuaris, i comprovem si existeix o no
-    const user = users.find((u) => {
+    const user = users.find((u) => { // matcheamos el user y la pass
         return u.username === username && u.password === password;
     });
-    if (user) {
+    if (user) { // si user no es undefined
         // Generarem el token
         const accessToken = jwt.sign(
             { username: user.username, role: user.role },
@@ -95,6 +91,7 @@ app.post("/login", (req, res) => {
             accessToken,
         });
     } else {
+        res.status(401)
         res.send("Username or password incorrect");
     }
 });
