@@ -8,15 +8,20 @@
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input square outlined clearable v-model="dni" type="dni" label="DNI" />
+              <q-input square outlined clearable v-model="dni" type="dni" label="DNI"
+              :rules="[val => new RegExp('[0-9]{8}[A-Z]').test(val) || 'DNI invalido' ]"/>
               <template>
                 <q-icon name="account_circle" slot="prepend"></q-icon>
               </template>
-              <q-input square outlined clearable v-model="username" type="username" label="Usuari" />
-              <q-input square outlined clearable v-model="password" float-label="Password" type="password" label="Contrasenya" />
-              <q-input square outlined clearable v-model="confirm" type="password" label="Confirma la contrasenya" />
-              <q-input square outlined clearable v-model="full_name" type="full_name" label="Nom complet" />
-            </q-form>
+              <q-input square outlined clearable v-model="username" type="username" label="Usuari"
+              :rules="[val => val.length > 3 || 'Tu usuario no mola']"/>
+              <q-input square outlined clearable v-model="password" float-label="Password" type="password" label="Contrasenya"
+              :rules="[val => val.length > 3 || 'Tu contraseña no mola']"/>
+              <q-input square outlined clearable v-model="confirm" type="password" label="Confirma la contrasenya"
+              :rules="[val => val.length > 3 || 'Tu contraseña no mola']"/>
+              <q-input square outlined clearable v-model="full_name" type="full_name" label="Nom complet"
+              :rules="[val => val.length > 2 && val.split(' ').length >= 2 && new RegExp('[A-Za-z ]*$').test(val)] "/>
+              </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
             <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="Registre" @click="validate" />
