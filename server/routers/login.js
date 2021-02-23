@@ -1,15 +1,16 @@
 const express = require("express")
 const bodyParser = require("body-parser");
-const router = express.Router();
 const token = require("./../middle/token")
 const UsersModel = require("./../db/models/Users")
 const ProfeModel = require("./../db/models/Profes")
-const daoInstanceUser = new UsersModel.DAO()
-const daoInstanceProfe = new ProfeModel.DAO()
 
 const accessTokenSecret = token.secret
 const refresherTokenSecret = token.refreshSecret
 const emitter = token.tokenEmitter
+
+const daoInstanceUser = new UsersModel.DAO()
+const daoInstanceProfe = new ProfeModel.DAO()
+const router = express.Router();
 
 router.use(bodyParser.json()) // middleware
 
@@ -20,37 +21,9 @@ router.post("/",(req,res) => { // It works
     const { username, password } = req.body;
 //    console.log(req.body);
     daoInstanceUser.check_user(username,password)
-        .then((result) => { // change to promise chaining
-            if(result) {
-                daoInstanceUser.getByUsername(username)
-                    .then((result) => { 
-                        daoInstanceProfe.isProfe(username).then((isProfe) => {
-                            const accessToken = emitter({ 
-                                username: result.username,
-                                user_id: result.id,
-                                role: isProfe ? "profe" : "alumne",
-                            });
-                            res.status(200)
-                            res.json({
-                                ok:true,
-                                data:
-                                { 
-                                    accessToken,
-                                    avatar:result.avatar
-                                }
-                            });
-                        })
-                    })
-                    .catch((err) => {
-                        res.status(500)
-                        res.send({
-                            ok:false,
-                            err:
-                            { 
-                                msg:"Internal Server Error"
-                            }
-                        })
-                    })
+        .then((exists) => { // change to promise chaining
+            if(exists) {
+                return daoInstanceUser.getByUsername(username)
             } else {
                 res.status(401)
                 res.send({
@@ -61,6 +34,34 @@ router.post("/",(req,res) => { // It works
                     }
                 })
             }
+        })
+        .then((user) => { 
+            daoInstanceProfe.is(username).then((isProfe) => {
+                const accessToken = emitter({ 
+                    username: user.username,
+                    user_id: user.id,
+                    role: isProfe ? "profe" : "alumne",
+                });
+                res.status(200)
+                res.json({
+                    ok:true,
+                    data:
+                    { 
+                        accessToken,
+                        avatar:user.avatar
+                    }
+                });
+            })
+        })
+        .catch((err) => {
+            res.status(500)
+            res.send({
+                ok:false,
+                err:
+                { 
+                    msg:"Internal Server Error"
+                }
+            })
         })
         .catch((err) => {
             console.log(err)

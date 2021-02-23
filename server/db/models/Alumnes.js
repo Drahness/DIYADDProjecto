@@ -96,7 +96,7 @@ class DAOAlumnes extends DAOUsers {
         })
     }
 
-    isAlumne(username) { // works
+    is(username) { // works
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
             let sql = "SELECT count(*) FROM docencia.alumne dp left join docencia.users du on du.id = dp.id_alumne where username = ?"
@@ -113,7 +113,8 @@ class DAOAlumnes extends DAOUsers {
     }
 }
 
-let DA = new DAOAlumnes()
+
+//let DA = new DAOAlumnes()
 /*
 DA.isAlumne("Ambros").then((res) => console.log(res)).catch((err) => console.log(err))
 DA.insert({username:"Alumne1",password:"asdas",full_name:"Alumnes1Full",repetidor:true,curs:1}).then((res) => console.log(res)).catch((err) => console.log(err))

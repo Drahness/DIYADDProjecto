@@ -35,8 +35,50 @@ const tokenEmitter = (json) => {
     return {token,refreshToken};
 }
 
+
+const onlyProfes = (req, res, next) => {
+    const requirement = require("../db/models/Profes")
+    const DAO = new requirement.DAO()
+    DAO.is(req.user.username)
+        .then((is) => {
+            if(is) {
+                console.log("profe next")
+                next()
+            } else {
+                console.log("forbidden")
+                res.status(401)
+                res.send({
+                    ok: false,
+                    err: "Acceso no autorizado"
+                })
+            }
+        })
+}
+
+const onlyAlumnes = (req, res, next) => {
+    const requirement = require("../db/models/Alumnes")
+    const DAO = new requirement.DAO()
+    DAO.isAlumne(req.user.username)
+        .then((is) => {
+            if(is) {
+                console.log("alumne next")
+
+                next()
+            } else {
+                console.log("forbidden")
+
+                res.status(401)
+                res.send({
+                    ok: false,
+                    err: "Acceso no autorizado"
+                })
+            }
+        })
+}
 exports.sign = jwt.sign
 exports.tokenCheck = tokenChecker
 exports.tokenEmitter = tokenEmitter
 exports.secret = accessTokenSecret
 exports.refreshSecret = refreshTokenSecret
+exports.onlyProfes = onlyProfes
+exports.onlyAlumnes = onlyAlumnes

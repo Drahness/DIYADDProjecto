@@ -96,7 +96,7 @@ class DAOProfes extends DAOUsers {
         })
     }
 
-    isProfe(username) {
+    is(username) {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
             let sql = "SELECT count(*) FROM docencia.professor dp left join docencia.users du on du.id = dp.id_professor where username = ?"
