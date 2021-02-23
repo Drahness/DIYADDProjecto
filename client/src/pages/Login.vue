@@ -16,7 +16,8 @@
             <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="Login" />
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
-            <p class="text-grey-6">No estas registrat? <a href="#/registro">Registra't</a></p>
+            <p class="text-grey-6">No estas registrat?</p>
+            <router-link to="register">Registra't</router-link>
           </q-card-section>
         </q-card>
       </div>
@@ -29,7 +30,7 @@ export default {
   name: 'Login',
   data () {
     return {
-      username: 'dfdgd',
+      username: '',
       password: ''
     }
   }
