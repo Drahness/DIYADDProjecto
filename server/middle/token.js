@@ -58,7 +58,7 @@ const onlyProfes = (req, res, next) => {
 const onlyAlumnes = (req, res, next) => {
     const requirement = require("../db/models/Alumnes")
     const DAO = new requirement.DAO()
-    DAO.isAlumne(req.user.username)
+    DAO.is(req.user.username)
         .then((is) => {
             if(is) {
                 console.log("alumne next")

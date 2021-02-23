@@ -62,17 +62,6 @@ router.post("/",(req,res) => { // It works
                     msg:"Internal Server Error"
                 }
             })
-        })
-        .catch((err) => {
-            console.log(err)
-            res.status(500)
-            res.send({
-                ok:false,
-                err:
-                { 
-                    msg:"Internal Server Error"
-                }
-            });
         });
 })
 
