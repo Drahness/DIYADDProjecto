@@ -9,7 +9,7 @@ class DAOProfes extends DAOUsers {
             let conn = this.mydb.getConnection();
             let sql = " SELECT * FROM docencia.users " +
                 " right join docencia.professor on users.id = professor.id_professor ";
-            conn.query(sql, [id], function (err, results) {
+            conn.query(sql, function (err, results) {
                 if (err) {
                     reject(err);
                 }
@@ -111,6 +111,24 @@ class DAOProfes extends DAOUsers {
             })
         })
     }
+
+    getAsignatures(id) {
+        return new Promise((resolve, reject) => {
+            let conn = this.mydb.getConnection();
+            let sql = "SELECT * FROM docencia.professor profes "+
+            " right join docencia.notes notes on notes.id_profe = profes.id_professor "+
+            " left join docencia.assignatura asig on  asig.id_assig = notes.id_assig where id_professor = ? "
+            conn.query(sql,[id], function (err,results) {
+                if(err) {
+                    reject(err)
+                }
+                else {
+                    conn.end();
+                    resolve(results)
+                }
+            })
+        })
+    }
 }
 
 
@@ -118,11 +136,12 @@ module.exports = {
     DAO: DAOProfes
 }
 
+
+//const DAO = new DAOProfes()
+
+//DAO.getAsignatures(2).then((a) => console.log(a))
+
 /*
-const DAO = new DAOProfes()
-let a = (a) => {}
-
-
 DAO.insert({username:"Pepasddaaasadasdasde", password:"e10adc3949ba59abbe56e057f20f883e"})
     .then((res) => console.log("bbbbbbbbbbbbbbbbbbb",res))
     .catch((err) => console.log(err))

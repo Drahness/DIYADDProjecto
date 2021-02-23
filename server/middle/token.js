@@ -21,14 +21,14 @@ const tokenChecker = (req, res, next) => {
     }
 };
 
-const tokenEmitter = (json) => {
+const tokenEmitter = (payload) => {
     const token = jwt.sign(
-        json,
+        payload,
         accessTokenSecret,
         { expiresIn: '20m' }
     );
     const refreshToken = jwt.sign(
-        json,
+        payload,
         refreshTokenSecret
     );
     refreshers.push(refreshToken);
@@ -62,11 +62,9 @@ const onlyAlumnes = (req, res, next) => {
         .then((is) => {
             if(is) {
                 console.log("alumne next")
-
                 next()
             } else {
                 console.log("forbidden")
-
                 res.status(401)
                 res.send({
                     ok: false,

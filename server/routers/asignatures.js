@@ -7,9 +7,12 @@ router.use(bodyParser.json()) // middleware
 
 
 router.get("/", token.tokenCheck,token.onlyAlumnes, (request,response) => {
-    console.log("get asignatures.js")
-    response.send("OK")
+    
 })
 
+router.get("/:id", token.tokenCheck ,token.onlyAlumnes, (request,response) => {
+    console.log("get asignatures.js")
 
+    response.send({msg:"OK",id:request.params.id})
+})
 exports.router = router
