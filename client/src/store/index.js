@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 // import example from './module-example'
-
+import defaultStore from './DIYADDStore'
 Vue.use(Vuex)
 
 /*
@@ -17,13 +17,18 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      defaultStore
     },
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEBUGGING
+    strict: process.env.DEV
   })
-
+  if (process.env.DEV && module.hot) {
+    module.hot.accept(['./DIYADDStore'], () => {
+      const newDefaultStore = require('./DIYADDStore').default
+      Store.hotUpdate({ modules: { defaultStore: newDefaultStore } })
+    })
+  }
   return Store
 }

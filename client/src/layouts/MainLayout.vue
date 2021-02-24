@@ -24,6 +24,7 @@
       show-if-above
       bordered
       content-class="bg-grey-1"
+      @click="drawerState = !drawerState"
     >
       <q-list>
         <q-item-label
@@ -97,6 +98,15 @@ export default {
       const timeStamp = new Date(Date.now())
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
       return timeStamp.toLocaleDateString('ca-ES', options)
+    },
+
+    drawerState: {
+      get () {
+        return this.$store.state.defaultStore.drawerOpened
+      },
+      set (val) {
+        this.$store.commit('defaultStore/changeDrawerOpened', val)
+      }
     }
   }
 }

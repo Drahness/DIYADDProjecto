@@ -21,7 +21,8 @@
     "test_profe_dao": "node server/db/models/Profes.js",
     "test_alumne_dao": "node server/db/models/Alumnes.js",
     "dev_quasar": "cd client && npm exec quasar dev",
-    "test_asig_dao": "node server/db/models/Asignatures.js"
+    "test_asig_dao": "node server/db/models/Asignatures.js",
+    "new_store":"cd client && npm exec quasar new store"
   },
   "repository": {
     "type": "git",
