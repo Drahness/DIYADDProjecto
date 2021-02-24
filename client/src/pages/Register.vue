@@ -7,26 +7,26 @@
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
-            <q-form class="q-gutter-md">
+            <q-form class="q-gutter-md" @submit="onSubmit">
               <q-input square outlined clearable v-model="dni" type="dni" label="DNI"
               :rules="[val => new RegExp('[0-9]{8}[A-Z]').test(val) || 'DNI invalido' ]"/>
               <template>
                 <q-icon name="account_circle" slot="prepend"></q-icon>
               </template>
               <q-input square outlined clearable v-model="username" type="username" label="Usuari"
-              :rules="[val => val.length > 3 || 'Tu usuario no mola']"/>
+              :rules="[val => val.lastIndexOf(' ') == -1 || 'Username no puede contener espacios.']"/>
               <q-input square outlined clearable v-model="password" float-label="Password" type="password" label="Contrasenya"
-              :rules="[val => val.length > 3 || 'Tu contraseña no mola']"/>
+              :rules="[val => val.length > 8 || 'Contraseña muy corta']"/>
               <q-input square outlined clearable v-model="confirm" type="password" label="Confirma la contrasenya"
-              :rules="[val => val.length > 3 || 'Tu contraseña no mola']"/>
+              :rules="[val => isPasswordAreEquals || 'Las contraseñas no coinciden.']"/>
               <q-input square outlined clearable v-model="full_name" type="full_name" label="Nom complet"
               :rules="[val => val.length > 2 && val.split(' ').length >= 2 && new RegExp('[A-Za-z ]*$').test(val)] "/>
+              <q-card-actions class="q-px-md">
+                <q-btn unelevated color="light-blue-7" type="submit" size="lg" class="full-width" label="Registre"/>
+                                                                                                  <!-- This is put in methods, not computed-->
+              </q-card-actions>
               </q-form>
           </q-card-section>
-          <q-card-actions class="q-px-md">
-            <q-btn unelevated color="light-blue-7" size="lg" class="full-width" label="Registre" @click="validate" />
-                                                                                                <!-- This is put in methods, not computed-->
-          </q-card-actions>
           <q-card-section class="text-center q-pa-none">
             <router-link to="login">Login</router-link>
           </q-card-section>
@@ -37,7 +37,10 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
+
   name: 'Register',
   data () {
     return {
@@ -49,12 +52,20 @@ export default {
     }
   },
   methods: {
-    validate () {
+    onSubmit () {
       console.log(this)
-      if (this.password === this.confirm) {
-        return true
-      }
-      return false
+      axios.post("https://localhost:1234/register")
+      .then((result) => {
+        console.log(result)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    }
+  },
+  computed: {
+    isPasswordAreEquals () {
+      return this.password === this.confirm
     }
   }
 }
