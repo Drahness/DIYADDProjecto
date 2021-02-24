@@ -115,6 +115,7 @@ export default {
     },
 
     isLogged () {
+      console.log("is loged", this.$store.getters.isLogged)
       return this.$store.getters.isLogged
     }
   }
