@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const login = require("./routers/login")
 const register = require("./routers/register")
+const notes = require("./routers/notes")
+const asignatures = require("./routers/asignatures")
+const moduls = require("./routers/moduls")
 const fs = require("fs");
 const https = require("https");
 const jwt = require("jsonwebtoken");
@@ -9,7 +12,8 @@ const bodyParser = require("body-parser");
 const port = 1234;
 const accessTokenSecret = "laParaulaSecretaDelServidor";
 
-// quitar
+// quitar 
+/*
 const middleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
         if (authHeader) {
@@ -27,7 +31,7 @@ const middleware = (req, res, next) => {
         res.sendStatus(401); // error 401(unauthorized);
     }
 };
-
+*/
 https
     .createServer(
         {
@@ -39,7 +43,8 @@ https
     .listen(port, () => console.log("Escuchando en puerto: ", port));
 
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // se necesita realmente?
+/*
 app.get("/users", middleware, (req, res) => {
     console.log("in post")
     const { username, password } = req.body;
@@ -53,7 +58,10 @@ app.get("/users", middleware, (req, res) => {
 });
 app.get("/", (req, res) => {
     res.send("aaaa");
-});
+});*/
 
 app.use("/login", login.router)
 app.use("/register", register.router)
+app.use("/notes", notes.router)
+app.use("/asignatures",asignatures.router)
+app.use("/moduls",moduls.router)

@@ -10,7 +10,7 @@ class DAOAlumnes extends DAOUsers {
             let conn = this.mydb.getConnection();
             let sql = " SELECT * FROM docencia.users " +
                 " right join docencia.alumne on users.id = alumne.id_alumne ";
-            conn.query(sql, [id], function (err, results) {
+            conn.query(sql, function (err, results) {
                 if (err) {
                     reject(err);
                 }
@@ -96,7 +96,7 @@ class DAOAlumnes extends DAOUsers {
         })
     }
 
-    isAlumne(username) { // works
+    is(username) { // works
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
             let sql = "SELECT count(*) FROM docencia.alumne dp left join docencia.users du on du.id = dp.id_alumne where username = ?"
@@ -111,9 +111,27 @@ class DAOAlumnes extends DAOUsers {
             })
         })
     }
+    getNotes(idAlumne) {
+        return new Promise((resolve, reject) => {
+            let conn = this.mydb.getConnection();
+            let sql = "SELECT * FROM docencia.notes "+
+            " left join docencia.assignatura asig on  asig.id_assig = notes.id_assig " +
+            " where id_alumne = ? "
+            conn.query(sql,[idAlumne], function (err,results) {
+                if(err) {
+                    reject(err)
+                }
+                else {
+                    conn.end();
+                    resolve(results)
+                }
+            })
+        })
+    }
 }
 
-let DA = new DAOAlumnes()
+
+//let DA = new DAOAlumnes()
 /*
 DA.isAlumne("Ambros").then((res) => console.log(res)).catch((err) => console.log(err))
 DA.insert({username:"Alumne1",password:"asdas",full_name:"Alumnes1Full",repetidor:true,curs:1}).then((res) => console.log(res)).catch((err) => console.log(err))
