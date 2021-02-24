@@ -37,10 +37,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios'
 
 export default {
-
   name: 'Register',
   data () {
     return {
@@ -54,13 +53,13 @@ export default {
   methods: {
     onSubmit () {
       console.log(this)
-      axios.post("https://localhost:1234/register")
-      .then((result) => {
-        console.log(result)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+      axios.post('https://localhost:1234/register')
+        .then((result) => {
+          console.log(result)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
   },
   computed: {
