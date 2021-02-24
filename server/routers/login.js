@@ -19,7 +19,10 @@ router.use(bodyParser.json()) // middleware
 router.post("/",(req,res) => { // It works
 //    console.log("in post");
     const { username, password } = req.body;
-//    console.log(req.body);
+    console.log(req.body);
+    console.log(username);
+    console.log(password);
+
     daoInstanceUser.check_user(username,password)
         .then((exists) => { // change to promise chaining
             if(exists) {

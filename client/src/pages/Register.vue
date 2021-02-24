@@ -37,8 +37,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Register',
   data () {
@@ -52,19 +50,21 @@ export default {
   },
   methods: {
     onSubmit () {
-      console.log(this)
-      axios.post('https://localhost:1234/register')
-        .then((result) => {
-          console.log(result)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      this.$store.dispatch('showcase/register', {
+        dni: this.dni,
+        full_name: this.full_name,
+        username: this.username,
+        password: this.password
+      })
     }
   },
   computed: {
     isPasswordAreEquals () {
       return this.password === this.confirm
+    },
+    isLogged () {
+      console.log(this.$store.getters.isLogged)
+      return this.$store.getters.isLogged
     }
   }
 }

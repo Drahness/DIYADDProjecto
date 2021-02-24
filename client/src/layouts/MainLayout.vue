@@ -8,7 +8,7 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="drawerState = !drawerState"
         />
 
         <q-toolbar-title>
@@ -24,23 +24,29 @@
       show-if-above
       bordered
       content-class="bg-grey-1"
-      @click="drawerState = !drawerState"
     >
       <q-list>
         <q-item-label
           header
           class="text-grey-8"
         >
-
         </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+          <div v-if="!isLogged">
+            <EssentialLink
+              v-for="link in unloggedL"
+              :key="link.title"
+              v-bind="link"
+            />
+          </div>
+          <div v-if="isLogged">
+            <EssentialLink
+              v-for="link in loggedL"
+              :key="link.title"
+              v-bind="link"
+            />
+          </div>
       </q-list>
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -49,9 +55,8 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
-import { date } from 'quasar'
 
-const linksData = [
+const unLoggedLinks = [
   {
     title: 'Login',
     caption: '',
@@ -72,28 +77,27 @@ const linksData = [
   }
 ]
 
+const loggedLinks = [
+  {
+    title: 'About',
+    caption: '',
+    icon: 'favorite',
+    link: '#/about'
+  }
+]
 export default {
   name: 'MainLayout',
   components: { EssentialLink },
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      essentialLink: unLoggedLinks,
+      unloggedL: unLoggedLinks,
+      loggedL: loggedLinks
     }
   },
   computed: {
     // Dimecres, 16 de Febrer de 2021
-    getDate () {
-      const timeStamp = Date.now()
-      let dateStr = date.formatDate(timeStamp, 'dddd, ') // dimecres
-      dateStr += date.formatDate(timeStamp, 'D') // 16
-      dateStr += ' de '
-      dateStr += date.formatDate(timeStamp, 'MMMM') // Febrer
-      dateStr += ' de '
-      dateStr += date.formatDate(timeStamp, 'YYYY') // 2021
-      return dateStr
-    },
-
     getDateCat () {
       const timeStamp = new Date(Date.now())
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
@@ -102,11 +106,16 @@ export default {
 
     drawerState: {
       get () {
-        return this.$store.state.defaultStore.drawerOpened
+        return this.$store.state.showcase.drawerState
       },
       set (val) {
-        this.$store.commit('defaultStore/changeDrawerOpened', val)
+        this.$store.commit('showcase/updateDrawerState', val)
+        this.leftDrawerOpen = val
       }
+    },
+
+    isLogged () {
+      return this.$store.getters.isLogged
     }
   }
 }

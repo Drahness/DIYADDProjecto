@@ -89,6 +89,7 @@ router.post("/", (req, res) => {
       });
   } else {
     res.status(400);
+    console.log(req.body)
     res.send({
       ok: false,
       err: {
