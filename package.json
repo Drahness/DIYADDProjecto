@@ -19,7 +19,8 @@
     "start_server": "node server/index.js",
     "test_user_dao": "node server/db/models/Users.js",
     "test_profe_dao": "node server/db/models/Profes.js",
-    "test_alumne_dao": "node server/db/models/Alumnes.js"
+    "test_alumne_dao": "node server/db/models/Alumnes.js",
+    "test_asig_dao": "node server/db/models/Asignatures.js"
   },
   "repository": {
     "type": "git",
