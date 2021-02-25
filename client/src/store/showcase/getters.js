@@ -16,3 +16,6 @@ export function getNotes (state) {
 export function getAvatar (state) {
   return state.avatar
 }
+export function getUsername (state) {
+  return state.username
+}

@@ -25,11 +25,13 @@
       bordered
       content-class="bg-grey-1"
     >
-      <div class="q-pa-md q-gutter-sm">
+      <q-banner class="bg-primary text-white">
         <q-avatar class="rounded-borders" size="64px" >
           <q-icon name="account_circle" size="64px"/>
-        </q-avatar>
-      </div>
+        </q-avatar >
+            {{username}}
+        </q-banner>
+
       <q-list>
         <q-item-label
           header
@@ -65,13 +67,13 @@ const unLoggedLinks = [
   {
     title: 'Login',
     caption: '',
-    icon: 'school',
+    icon: 'login',
     link: '#/login'
   },
   {
     title: 'Registre',
     caption: '',
-    icon: 'school',
+    icon: 'register',
     link: '#/register'
   },
   {
@@ -84,6 +86,16 @@ const unLoggedLinks = [
 
 const loggedLinks = [
   {
+    title: 'Notes',
+    caption: '',
+    icon: 'speaker_notes',
+    link: '#/notes'
+  }, {
+    title: 'Logout',
+    caption: '',
+    icon: 'logout',
+    link: '#/logout'
+  }, {
     title: 'About',
     caption: '',
     icon: 'favorite',
@@ -120,8 +132,13 @@ export default {
     },
 
     isLogged () {
-      console.log('is loged', this.$store.getters['showcase/isLogged'])
       return this.$store.getters['showcase/isLogged']
+    },
+    username () {
+      return this.$store.getters['showcase/getUsername']
+    },
+    avatar () {
+      return this.$store.getters['showcase/getAvatar']
     }
   }
 }

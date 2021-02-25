@@ -3,6 +3,7 @@ export default function () {
     username: '',
     drawerState: true,
     refreshToken: '',
+    role: '',
     token: '',
     avatar: '',
     registered: false,
