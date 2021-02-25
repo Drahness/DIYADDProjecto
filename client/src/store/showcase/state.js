@@ -1,9 +1,9 @@
 export default function () {
   return {
+    username: '',
     drawerState: true,
     refreshToken: '',
     token: '',
-    credentials: {}, // deprecated
     avatar: '',
     registered: false,
     logged: false

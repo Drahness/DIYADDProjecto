@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken'
 
 export const updateDrawerState = (state, opened) => {
   console.log('updateDrawerState mutation')
@@ -12,6 +13,7 @@ export const updateCredentialsState = (state, newCredentials) => {
 export const doLogin = (state, response) => {
   console.log('doLogin mutation')
   state.token = response.data.accessToken.token
+  state.username = jwt.decode(response.data.accessToken.token).username
   state.refreshToken = response.data.accessToken.refreshToken
   state.avatar = response.data.avatar
   state.logged = true

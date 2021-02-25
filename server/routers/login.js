@@ -5,10 +5,6 @@ const UsersModel = require("./../db/models/Users")
 const ProfeModel = require("./../db/models/Profes")
 const MD5 = require('md5')
 
-const accessTokenSecret = token.secret
-const refresherTokenSecret = token.refreshSecret
-const emitter = token.tokenEmitter
-
 const daoInstanceUser = new UsersModel.DAO()
 const daoInstanceProfe = new ProfeModel.DAO()
 const router = express.Router();
@@ -55,7 +51,7 @@ router.post("/",(req,res) => { // It works
             }
         })
         .then((isProfe) => {
-            const accessToken = emitter({ 
+            const accessToken = token.tokenEmitter({ 
                 username: userTrying.username,
                 user_id: userTrying.id,
                 role: isProfe ? "profe" : "alumne",
