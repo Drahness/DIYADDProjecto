@@ -1,4 +1,4 @@
-const express = require("express")
+const express = require("express");
 const bodyParser = require("body-parser");
 const token = require("./../middle/token")
 const daoprofes = require("./../db/models/Profes")
@@ -67,8 +67,12 @@ router.get("/:id", token.tokenCheck ,token.onlyProfes, (request,response) => { /
         response.status(500)
         response.send({ok:false, data: "Internal server error"})
     })
-    
-})
+    .catch((err) => {
+      console.log(err);
+      response.status(500);
+      response.send({ ok: false, err: "Internal server error" });
+    });
+});
 
 router.put("/:id_modul/:id_alumne", token.tokenCheck, token.onlyProfes, (request,response) => {
     console.log("put modules.js ")
