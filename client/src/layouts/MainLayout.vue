@@ -115,7 +115,7 @@ export default {
     },
 
     isLogged () {
-      console.log("is loged", this.$store.getters.isLogged)
+      console.log('is loged', this.$store.getters['showcase/isLogged'])
       return this.$store.getters.isLogged
     }
   }
