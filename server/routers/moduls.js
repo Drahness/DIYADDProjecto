@@ -70,7 +70,7 @@ router.get("/:id", token.tokenCheck ,token.onlyProfes, (request,response) => { /
     .catch((err) => {
       console.log(err);
       response.status(500);
-      response.send({ ok: false, err: "Internal server error" });
+      response.send({ ok: false, data: "Internal server error" });
     });
 });
 
