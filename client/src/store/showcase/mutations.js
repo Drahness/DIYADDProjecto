@@ -1,3 +1,4 @@
+
 export const updateDrawerState = (state, opened) => {
   console.log('updateDrawerState mutation')
   state.drawerState = opened

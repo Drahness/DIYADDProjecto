@@ -25,6 +25,11 @@
       bordered
       content-class="bg-grey-1"
     >
+      <div class="q-pa-md q-gutter-sm">
+        <q-avatar class="rounded-borders" size="64px" >
+          <q-icon name="account_circle" size="64px"/>
+        </q-avatar>
+      </div>
       <q-list>
         <q-item-label
           header
@@ -38,7 +43,7 @@
               v-bind="link"
             />
           </div>
-          <div v-if="isLogged">
+          <div v-else>
             <EssentialLink
               v-for="link in loggedL"
               :key="link.title"

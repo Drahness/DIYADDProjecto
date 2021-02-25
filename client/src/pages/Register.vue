@@ -7,7 +7,7 @@
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
-            <q-form class="q-gutter-md" @submit="onSubmit">
+            <q-form class="q-gutter-md" @submit="onSubmit" >
               <q-input square outlined clearable v-model="dni" type="dni" label="DNI"
               :rules="[val => new RegExp('[0-9]{8}[A-Z]').test(val) || 'DNI invalido' ]"/>
               <template>
@@ -63,8 +63,8 @@ export default {
       return this.password === this.confirm
     },
     isLogged () {
-      console.log(this.$store.getters.isLogged)
-      return this.$store.getters.isLogged
+      console.log(this.$store.getters['showcase/isLogged'], 'holaaa ')
+      return this.$store.getters['showcase/isLogged']
     }
   }
 }

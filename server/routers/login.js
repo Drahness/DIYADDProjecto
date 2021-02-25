@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const token = require("./../middle/token")
 const UsersModel = require("./../db/models/Users")
 const ProfeModel = require("./../db/models/Profes")
+const MD5 = require('md5')
 
 const accessTokenSecret = token.secret
 const refresherTokenSecret = token.refreshSecret
@@ -17,18 +18,16 @@ router.use(bodyParser.json()) // middleware
 //router.get("/")
 
 router.post("/",(req,res) => { // It works
-//    console.log("in post");
     const { username, password } = req.body;
-    console.log(req.body);
-    console.log(username);
-    console.log(password);
-
-    daoInstanceUser.check_user(username,password)
+    console.log(req.body, 'login');
+    const encryptedPassword = MD5(password)
+    let userTrying;
+    daoInstanceUser.check_user(username,encryptedPassword)
         .then((exists) => { // change to promise chaining
             if(exists) {
                 return daoInstanceUser.getByUsername(username)
             } else {
-                res.status(401)
+                res.status(200)
                 res.send({
                     ok:false,
                     err:
@@ -39,22 +38,37 @@ router.post("/",(req,res) => { // It works
             }
         })
         .then((user) => { 
-            daoInstanceProfe.is(username).then((isProfe) => {
-                const accessToken = emitter({ 
-                    username: user.username,
-                    user_id: user.id,
-                    role: isProfe ? "profe" : "alumne",
-                });
+            if(user) {
+                userTrying = user
+                return daoInstanceProfe.is(username)
+            } else {
                 res.status(200)
-                res.json({
-                    ok:true,
-                    data:
-                    { 
-                        accessToken,
-                        avatar:user.avatar
+                res.json(
+                    {
+                        ok: false,
+                        err: 
+                        {
+                            msg: "User not found idont know what, error of server"
+                        }
                     }
-                });
-            })
+                )
+            }
+        })
+        .then((isProfe) => {
+            const accessToken = emitter({ 
+                username: userTrying.username,
+                user_id: userTrying.id,
+                role: isProfe ? "profe" : "alumne",
+            });
+            res.status(200)
+            res.json({
+                ok:true,
+                data:
+                { 
+                    accessToken,
+                    avatar:userTrying.avatar
+                }
+            });
         })
         .catch((err) => {
             res.status(500)

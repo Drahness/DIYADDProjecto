@@ -1,4 +1,5 @@
 import { api } from 'boot/axios'
+import { Notify } from 'quasar'
 
 export function login (state, form) {
   api
@@ -6,10 +7,28 @@ export function login (state, form) {
     .then((response) => {
       if (response.data.ok) {
         state.commit('doLogin', response.data)
+        Notify.create(
+          {
+            type: 'info',
+            message: 'Logged in!'
+          }
+        )
+      } else {
+        Notify.create(
+          {
+            type: 'negative',
+            message: response.data.err.msg
+          }
+        )
       }
     })
     .catch((err) => {
-      console.log(err)
+      Notify.create(
+        {
+          type: 'negative',
+          message: 'Ha salido algo mal con el servidor ' + err
+        }
+      )
     })
 }
 
@@ -23,11 +42,28 @@ export function register (store, form) {
       avatar: form.avatar
     })
     .then((response) => {
-      if (response.data.ok) {
-        store.commit('showcase/registerState')
+      if (response.data.ok) { // A salido bien la cosa
+        Notify.create(
+          {
+            type: 'positive',
+            message: 'User created'
+          }
+        )
+        store.commit('registerState')
+        this.$router.push('/login')
+      } else {
+        Notify.create(
+          {
+            type: 'negative',
+            message: response.data.err.msg
+          }
+        )
       }
     })
-    .catch((err) => {
-      console.log(err)
+    .catch((...err) => {
+      Notify.create({
+        type: 'negative',
+        message: 'Ha salido algo mal con el servidor ' + err
+      })
     })
 }

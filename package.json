@@ -6,6 +6,7 @@
     "fs": "^0.0.1-security",
     "https": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
+    "md5": "^2.3.0",
     "mysql": "^2.18.1"
   },
   "name": "diyaddprojecto",
@@ -23,8 +24,8 @@
     "dev_quasar": "cd client && npm quasar dev",
     "w_dev_quasar": "cd client && npx quasar dev",
     "test_asig_dao": "node server/db/models/Asignatures.js",
-    "new_store":"cd client && npm exec quasar new store",
-    "w_new_store":"cd client && npx quasar new store"
+    "new_store": "cd client && npm exec quasar new store",
+    "w_new_store": "cd client && npx quasar new store"
   },
   "repository": {
     "type": "git",
