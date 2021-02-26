@@ -60,13 +60,14 @@ router.post("/",(req,res) => { // It works
             res.json({
                 ok:true,
                 data:
-                { 
+                {
                     accessToken,
                     avatar:userTrying.avatar
                 }
             });
         })
         .catch((err) => {
+            console.log(err)
             res.status(500)
             res.send({
                 ok:false,

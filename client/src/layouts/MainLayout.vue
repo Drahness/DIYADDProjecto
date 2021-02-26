@@ -24,12 +24,14 @@
       show-if-above
       bordered
       content-class="bg-grey-1"
+      v-on:hide="drawerState = false"
     >
+    <!-- Si no tienes v-on:hide asi hay un bug que tienes que darle click dos veces para sacar el drawer-->
       <q-banner class="bg-primary text-white">
         <q-avatar class="rounded-borders" size="64px" >
           <q-icon name="account_circle" size="64px"/>
         </q-avatar >
-            {{username}}
+            {{ username }}
         </q-banner>
 
       <q-list>
@@ -73,7 +75,7 @@ const unLoggedLinks = [
   {
     title: 'Registre',
     caption: '',
-    icon: 'register',
+    icon: 'app_registration',
     link: '#/register'
   },
   {
