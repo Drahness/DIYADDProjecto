@@ -13,7 +13,7 @@ export function login (state, form) {
             message: 'Logged in!'
           }
         )
-        this.$router.push('/')
+        this.$router.push('/') // mandas la web a cierto lugar
       } else {
         Notify.create(
           {

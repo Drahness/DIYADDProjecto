@@ -7,16 +7,18 @@ const asignatures = require("./routers/asignatures")
 const moduls = require("./routers/moduls")
 const fs = require("fs");
 const https = require("https");
+const cors = require('cors')
 const port = 1234;
 
-app.use(function(req, res, next) {
+/*app.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
       'Access-Control-Allow-Headers',
       'Origin, X-Requested-With, Content-Type, Accept'
     );
     next();
-  });
+  }); */
+ app.use(cors())
 https
     .createServer(
         {

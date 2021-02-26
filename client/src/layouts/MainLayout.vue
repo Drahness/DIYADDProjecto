@@ -27,12 +27,15 @@
       v-on:hide="drawerState = false"
     >
     <!-- Si no tienes v-on:hide asi hay un bug que tienes que darle click dos veces para sacar el drawer-->
-      <q-banner class="bg-primary text-white">
-        <q-avatar class="rounded-borders" size="64px" >
-          <q-icon name="account_circle" size="64px"/>
+      <q-banner class="bg-primary text-white d-flex flex-row" v-if="isLogged">
+        <q-avatar class="rounded-borders " > <!-- size="64px"-->
+          <q-icon name="account_circle" />
         </q-avatar >
             {{ username }}
-        </q-banner>
+      </q-banner>
+
+      <q-banner class="bg-primary text-white" v-else>
+      </q-banner>
 
       <q-list>
         <q-item-label
