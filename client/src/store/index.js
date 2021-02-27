@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// import example from './module-example'
+import showcase from './showcase'
 
 Vue.use(Vuex)
 
@@ -17,13 +17,19 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      showcase
     },
 
     // enable strict mode (adds overhead!)
-    // for dev mode only
+    // for dev mode and --debug builds only
     strict: process.env.DEBUGGING
   })
-
+  if (process.env.DEV && module.hot) {
+    console.log('DEV')
+    module.hot.accept(['./showcase'], () => {
+      const newShowcase = require('./showcase').default
+      Store.hotUpdate({ modules: { showcase: newShowcase } })
+    })
+  }
   return Store
 }

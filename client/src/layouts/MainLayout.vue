@@ -8,7 +8,7 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="drawerState = !drawerState"
         />
 
         <q-toolbar-title>
@@ -24,22 +24,41 @@
       show-if-above
       bordered
       content-class="bg-grey-1"
+      v-on:hide="drawerState = false"
     >
+    <!-- Si no tienes v-on:hide asi hay un bug que tienes que darle click dos veces para sacar el drawer-->
+      <q-banner class="bg-primary text-white d-flex flex-row" v-if="isLogged">
+        <q-avatar class="rounded-borders " > <!-- size="64px"-->
+          <q-icon name="account_circle" />
+        </q-avatar >
+            {{ username }}
+      </q-banner>
+
+      <q-banner class="bg-primary text-white" v-else>
+      </q-banner>
+
       <q-list>
         <q-item-label
           header
           class="text-grey-8"
         >
-
         </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+          <div v-if="!isLogged">
+            <EssentialLink
+              v-for="link in unloggedL"
+              :key="link.title"
+              v-bind="link"
+            />
+          </div>
+          <div v-else>
+            <EssentialLink
+              v-for="link in loggedL"
+              :key="link.title"
+              v-bind="link"
+            />
+          </div>
       </q-list>
     </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -48,19 +67,18 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
-import { date } from 'quasar'
 
-const linksData = [
+const unLoggedLinks = [
   {
     title: 'Login',
     caption: '',
-    icon: 'school',
+    icon: 'login',
     link: '#/login'
   },
   {
     title: 'Registre',
     caption: '',
-    icon: 'school',
+    icon: 'app_registration',
     link: '#/register'
   },
   {
@@ -71,32 +89,61 @@ const linksData = [
   }
 ]
 
+const loggedLinks = [
+  {
+    title: 'Notes',
+    caption: '',
+    icon: 'speaker_notes',
+    link: '#/notes'
+  }, {
+    title: 'Logout',
+    caption: '',
+    icon: 'logout',
+    link: '#/logout'
+  }, {
+    title: 'About',
+    caption: '',
+    icon: 'favorite',
+    link: '#/about'
+  }
+]
 export default {
   name: 'MainLayout',
   components: { EssentialLink },
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      essentialLink: unLoggedLinks,
+      unloggedL: unLoggedLinks,
+      loggedL: loggedLinks
     }
   },
   computed: {
     // Dimecres, 16 de Febrer de 2021
-    getDate () {
-      const timeStamp = Date.now()
-      let dateStr = date.formatDate(timeStamp, 'dddd, ') // dimecres
-      dateStr += date.formatDate(timeStamp, 'D') // 16
-      dateStr += ' de '
-      dateStr += date.formatDate(timeStamp, 'MMMM') // Febrer
-      dateStr += ' de '
-      dateStr += date.formatDate(timeStamp, 'YYYY') // 2021
-      return dateStr
-    },
-
     getDateCat () {
       const timeStamp = new Date(Date.now())
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
       return timeStamp.toLocaleDateString('ca-ES', options)
+    },
+
+    drawerState: {
+      get () {
+        return this.$store.state.showcase.drawerState
+      },
+      set (val) {
+        this.$store.commit('showcase/updateDrawerState', val)
+        this.leftDrawerOpen = val
+      }
+    },
+
+    isLogged () {
+      return this.$store.getters['showcase/isLogged']
+    },
+    username () {
+      return this.$store.getters['showcase/getUsername']
+    },
+    avatar () {
+      return this.$store.getters['showcase/getAvatar']
     }
   }
 }

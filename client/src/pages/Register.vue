@@ -7,7 +7,7 @@
       <div class="row">
         <q-card square bordered class="q-pa-lg shadow-1">
           <q-card-section>
-            <q-form class="q-gutter-md" @submit="onSubmit">
+            <q-form class="q-gutter-md" @submit="onSubmit" >
               <q-input square outlined clearable v-model="dni" type="dni" label="DNI"
               :rules="[val => new RegExp('[0-9]{8}[A-Z]').test(val) || 'DNI invalido' ]"/>
               <template>
@@ -37,8 +37,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Register',
   data () {
@@ -52,19 +50,21 @@ export default {
   },
   methods: {
     onSubmit () {
-      console.log(this)
-      axios.post('https://localhost:1234/register')
-        .then((result) => {
-          console.log(result)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      this.$store.dispatch('showcase/register', {
+        dni: this.dni,
+        full_name: this.full_name,
+        username: this.username,
+        password: this.password
+      })
     }
   },
   computed: {
     isPasswordAreEquals () {
       return this.password === this.confirm
+    },
+    isLogged () {
+      console.log(this.$store.getters['showcase/isLogged'], 'holaaa ')
+      return this.$store.getters['showcase/isLogged']
     }
   }
 }

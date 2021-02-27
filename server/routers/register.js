@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const md5 = require('md5')
 const token = require("./../middle/token");
 const UsersModel = require("./../db/models/Users");
 const ProfeModel = require("./../db/models/Profes");
@@ -23,6 +24,7 @@ router.post("/", (req, res) => {
     !(username === "" || username == undefined) &&
     !(password === "" || password == undefined)
   ) {
+    const encriptedPassword = md5(password)
     daoInstanceUser
       .getByUsername(username)
       .then((exists) => {
@@ -43,7 +45,7 @@ router.post("/", (req, res) => {
           role = "profe";
           return daoInstanceProfe.insert({
             username: username,
-            password: password,
+            password: encriptedPassword,
             full_name: full_name,
             avatar: avatar,
           });
@@ -51,14 +53,13 @@ router.post("/", (req, res) => {
           role = "alumne";
           return daoInstanceAlumne.insert({
             username: username,
-            password: password,
+            password: encriptedPassword,
             full_name: full_name,
             avatar: avatar,
           });
         }
       }) // dni checked
       .then((insertionResult) => {
-        //console.log(insertionResult)
         const accessToken = emitter({
           username: username,
           user_id: insertionResult.insertId,
@@ -85,6 +86,7 @@ router.post("/", (req, res) => {
       });
   } else {
     res.status(400);
+    console.log(req.body)
     res.send({
       ok: false,
       data: {
