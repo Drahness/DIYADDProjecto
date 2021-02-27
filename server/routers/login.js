@@ -4,6 +4,7 @@ const token = require("./../middle/token")
 const UsersModel = require("./../db/models/Users")
 const ProfeModel = require("./../db/models/Profes")
 const MD5 = require('md5')
+const emitter = token.tokenEmitter
 
 const daoInstanceUser = new UsersModel.DAO()
 const daoInstanceProfe = new ProfeModel.DAO()
@@ -26,10 +27,7 @@ router.post("/",(req,res) => { // It works
                 res.status(200)
                 res.send({
                     ok:false,
-                    err:
-                    { 
-                        msg:"Username or password incorrect"
-                    }
+                    data: "Username or password incorrect"
                 })
             }
         })
@@ -71,10 +69,7 @@ router.post("/",(req,res) => { // It works
             res.status(500)
             res.send({
                 ok:false,
-                err:
-                { 
-                    msg:"Internal Server Error"
-                }
+                data:"Internal Server Error"
             })
         });
 })

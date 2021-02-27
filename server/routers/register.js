@@ -10,8 +10,6 @@ const router = express.Router();
 const daoInstanceUser = new UsersModel.DAO();
 const daoInstanceProfe = new ProfeModel.DAO();
 const daoInstanceAlumne = new AlumneModel.DAO();
-const accessTokenSecret = token.secret;
-const refresherTokenSecret = token.refreshSecret;
 const emitter = token.tokenEmitter;
 
 router.use(bodyParser.json()); // middleware
@@ -34,12 +32,10 @@ router.post("/", (req, res) => {
           // not exists
           return daoInstanceProfe.checkDNI(dni);
         } else {
-          res.status(200);
+          res.status(400);
           res.send({
             ok: false,
-            err: {
-              msg: "User already exists",
-            },
+            data: "User already exists"
           });
         }
       })
@@ -83,8 +79,8 @@ router.post("/", (req, res) => {
         res.status(500);
         res.send({
           ok: false,
-          err: {
-            msg: "Internal Server Error"
+          data: {
+            msg: "Internal Server Error",
           },
         });
       });
@@ -93,7 +89,7 @@ router.post("/", (req, res) => {
     console.log(req.body)
     res.send({
       ok: false,
-      err: {
+      data: {
         msg: "Bad Request",
       },
     });

@@ -67,7 +67,7 @@ class DAOProfes extends DAOUsers {
                         }
                         else {
                             conn.end();
-                            resolve(results[0]);
+                            resolve(results);
                         }
                     })
                 })

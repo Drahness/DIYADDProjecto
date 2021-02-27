@@ -8,6 +8,7 @@ const moduls = require("./routers/moduls")
 const fs = require("fs");
 const https = require("https");
 const cors = require('cors')
+const bodyParser = require("body-parser");
 const port = 1234;
 
 /*app.use(function(req, res, next) {
@@ -34,3 +35,6 @@ app.use("/register", register.router)
 app.use("/notes", notes.router)
 app.use("/asignatures",asignatures.router)
 app.use("/moduls",moduls.router)
+
+
+exports.port = port

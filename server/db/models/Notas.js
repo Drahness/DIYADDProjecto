@@ -3,7 +3,7 @@ const Connector = require("../connector");
 /**
  * You need to pass all the parameters in the query. Watch out
  */
-class DAOAsignatures {
+class DAONotes {
     constructor() {
         this.mydb = new Connector.Connector()
     }
@@ -11,7 +11,7 @@ class DAOAsignatures {
     getAll() {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
-            let sql = " SELECT * FROM docencia.assignatura ";
+            let sql = " SELECT * FROM docencia.notes ";
             conn.query(sql, function (err, results) {
                 if (err) {
                     reject(err);
@@ -23,12 +23,11 @@ class DAOAsignatures {
             })
         })
     }
-
-    getByID(id) {
+    getByID(id_alumne,id_profe,id_assig) {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
-            let sql = "SELECT * FROM docencia.assignatura where id_assig = ?";
-            conn.query(sql, [id], function (err, results) {
+            let sql = " SELECT * FROM docencia.notes where id_alumne = ? AND id_profe = ? AND id_assig = ? ";
+            conn.query(sql, [id_alumne,id_profe,id_assig], function (err, results) {
                 if (err) {
                     reject(err);
                 }
@@ -39,13 +38,13 @@ class DAOAsignatures {
             })
         })
     }
-
-    update(id, json) {
+    update(id_alumne,id_profe,id_assig, json) {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();    
-            let sql = "UPDATE docencia.assignatura SET cod_assig = ?, nom_assig = ?, modul = ?, curs = ?, hores = ? WHERE id_assig = ?;"
-            conn.query(sql, [json.cod_assig ,json.nom_assig , json.modul, json.curs, json.hores, id], function (err, results) {
+            let sql = "UPDATE docencia.notes SET nota = ? WHERE id_alumne = ? AND id_profe = ? AND id_assig = ?"
+            conn.query(sql, [json.nota, id_alumne, id_profe, id_assig], function (err, results) {
                 if (err) {
+                    console.log(results)
                     reject(err);
                 }
                 else {
@@ -55,34 +54,17 @@ class DAOAsignatures {
             })
         })
     }
-    
     insert(json) {
         return new Promise((resolve,reject) => {
             let conn = this.mydb.getConnection();
-            let sql = "INSERT INTO docencia.assignatura (id_assig, cod_assig, nom_assig, modul, curs, hores) VALUES (?,?,?,?,?,?)"
-            conn.query(sql, [json.id_assig,json.cod_assig,json.nom_assig,json.modul,json.curs, json.hores], function (err, results) {
+            let sql = "INSERT INTO docencia.notes (id_alumne,id_profe,id_assig,nota) VALUES (?,?,?,?)"
+            conn.query(sql, [json.id_alumne,json.id_profe,json.id_assig,json.nota], function (err, results) {
                 if (err) {
                     reject(err);
                 }
                 else {
                     conn.end();
                     resolve(results);
-                }
-            })
-        })
-    }
-
-    getNotes(id) {
-        return new Promise((resolve, reject) => {
-            let conn = this.mydb.getConnection();
-            let sql = " SELECT count(*) FROM docencia.notes WHERE id_assig = ? "
-            conn.query(sql,[id], function (err,results) {
-                if(err) {
-                    reject(err)
-                }
-                else {
-                    conn.end();
-                    resolve(results)
                 }
             })
         })
@@ -97,5 +79,5 @@ DAO.getByID(1).then((res) => console.log(res))
 */
 
 module.exports = {
-    DAO: DAOAsignatures
+    DAO: DAONotes
 }

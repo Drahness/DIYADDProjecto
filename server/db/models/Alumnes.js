@@ -67,7 +67,7 @@ class DAOAlumnes extends DAOUsers {
                         }
                         else {
                             conn.end();
-                            resolve(results[0]);
+                            resolve(results);
                         }
                     })
                 })
@@ -118,6 +118,23 @@ class DAOAlumnes extends DAOUsers {
             " left join docencia.assignatura asig on  asig.id_assig = notes.id_assig " +
             " where id_alumne = ? "
             conn.query(sql,[idAlumne], function (err,results) {
+                if(err) {
+                    reject(err)
+                }
+                else {
+                    conn.end();
+                    resolve(results)
+                }
+            })
+        })
+    }
+    getAsignatures(id) {
+        return new Promise((resolve, reject) => {
+            let conn = this.mydb.getConnection();
+            let sql = "SELECT * FROM docencia.alumne alumne "+
+            " right join docencia.notes notes on notes.id_alumne = alumne.id_alumne "+
+            " left join docencia.assignatura asig on  asig.id_assig = notes.id_assig where alumne.id_alumne = ? "
+            conn.query(sql,[id], function (err,results) {
                 if(err) {
                     reject(err)
                 }

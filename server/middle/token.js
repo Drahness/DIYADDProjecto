@@ -7,7 +7,7 @@ const refreshers = []
 
 const tokenChecker = (req, res, next) => {
     const authHeader = req.headers.authorization;
-        if (authHeader) {
+    if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, accessTokenSecret, (err, user) => {
             if (err) {
