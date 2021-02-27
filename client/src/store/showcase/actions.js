@@ -1,6 +1,10 @@
 import { api } from 'boot/axios'
 import { Notify } from 'quasar'
 
+export function logout (state) {
+
+}
+
 export function login (state, form) {
   api
     .post('https://localhost:1234/login', { username: form.username, password: form.password })
@@ -15,10 +19,11 @@ export function login (state, form) {
         )
         this.$router.push('/') // mandas la web a cierto lugar
       } else {
+        console.log(response.data, 'aa')
         Notify.create(
           {
             type: 'negative',
-            message: response.data.err.msg
+            message: response.data.data
           }
         )
       }
@@ -56,7 +61,7 @@ export function register (store, form) {
         Notify.create(
           {
             type: 'negative',
-            message: response.data.err.msg
+            message: response.data.data
           }
         )
       }

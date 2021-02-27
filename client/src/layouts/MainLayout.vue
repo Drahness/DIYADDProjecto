@@ -96,6 +96,11 @@ const loggedLinks = [
     icon: 'speaker_notes',
     link: '#/notes'
   }, {
+    title: 'Asignatures',
+    caption: '',
+    icon: 'book',
+    link: '#/asignatures'
+  }, {
     title: 'Logout',
     caption: '',
     icon: 'logout',
@@ -144,6 +149,9 @@ export default {
     },
     avatar () {
       return this.$store.getters['showcase/getAvatar']
+    },
+    role () {
+      return this.$store.getters['showcase/getRole']
     }
   }
 }

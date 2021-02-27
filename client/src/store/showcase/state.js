@@ -1,7 +1,7 @@
 export default function () {
   return {
-    username: '',
     drawerState: false,
+    username: '',
     refreshToken: '',
     role: '',
     token: '',

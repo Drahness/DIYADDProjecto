@@ -18,6 +18,16 @@ export const doLogin = (state, response) => {
   state.avatar = response.data.avatar
   state.logged = true
 }
+export const logout = (state) => {
+  console.log('logout mutation')
+  state.username = ''
+  state.refreshToken = ''
+  state.role = ''
+  state.token = ''
+  state.avatar = ''
+  state.registered = false
+  state.logged = false
+}
 export const registerState = (state, register) => {
   console.log('registerState mutation')
   state.register = register
