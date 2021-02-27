@@ -7,10 +7,8 @@ const asignatures = require("./routers/asignatures")
 const moduls = require("./routers/moduls")
 const fs = require("fs");
 const https = require("https");
-const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const port = 1234;
-const accessTokenSecret = "laParaulaSecretaDelServidor";
 
 // quitar 
 /*
@@ -65,3 +63,6 @@ app.use("/register", register.router)
 app.use("/notes", notes.router)
 app.use("/asignatures",asignatures.router)
 app.use("/moduls",moduls.router)
+
+
+exports.port = port

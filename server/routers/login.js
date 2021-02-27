@@ -3,9 +3,6 @@ const bodyParser = require("body-parser");
 const token = require("./../middle/token")
 const UsersModel = require("./../db/models/Users")
 const ProfeModel = require("./../db/models/Profes")
-
-const accessTokenSecret = token.secret
-const refresherTokenSecret = token.refreshSecret
 const emitter = token.tokenEmitter
 
 const daoInstanceUser = new UsersModel.DAO()
@@ -28,10 +25,7 @@ router.post("/",(req,res) => { // It works
                 res.status(401)
                 res.send({
                     ok:false,
-                    err:
-                    { 
-                        msg:"Username or password incorrect"
-                    }
+                    data: "Username or password incorrect"
                 })
             }
         })
@@ -57,10 +51,7 @@ router.post("/",(req,res) => { // It works
             res.status(500)
             res.send({
                 ok:false,
-                err:
-                { 
-                    msg:"Internal Server Error"
-                }
+                data:"Internal Server Error"
             })
         });
 })

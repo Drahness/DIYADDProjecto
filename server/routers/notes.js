@@ -15,7 +15,7 @@ router.get("/", token.tokenCheck, token.onlyAlumnes, (request, response) => {
               cod_assig: object.cod_assig,
               nom_assig: object.nota,
               link: {
-                  get:"GET https://localhost:1234/assignatura/"+object.id_assig
+                  get:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/assignatura/"+object.id_assig
               }
           })
       })
@@ -25,7 +25,7 @@ router.get("/", token.tokenCheck, token.onlyAlumnes, (request, response) => {
   }).catch((err) => {
       console.log(err)
       response.status(500)
-      response.send({ok:false, err: "Internal server error"})
+      response.send({ok:false, data: "Internal server error"})
   })
 });
 
@@ -35,10 +35,10 @@ router.get("/:id", token.tokenCheck, token.onlyAlumnes, (request, response) => {
       let result = res[request.params.id]
       let notaConcreta = {} 
       notaConcreta.id_assig = result.id_assig,
-      notaConcreta.cod_assig =result.cod_assig,
+      notaConcreta.cod_assig = result.cod_assig,
       notaConcreta.nom_assig = result.nota,
       notaConcreta.link = {
-          get:"GET https://localhost:1234/assignatura/"+result.id_assig
+          get:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/assignatura/"+result.id_assig
       }
       response.send({ok:true,
                   data: notaConcreta})
@@ -46,7 +46,7 @@ router.get("/:id", token.tokenCheck, token.onlyAlumnes, (request, response) => {
   }).catch((err) => {
       console.log(err)
       response.status(500)
-      response.send({ok:false, err: "Internal server error"})
+      response.send({ok:false, data: "Internal server error"})
   })
 });
 
