@@ -2,7 +2,6 @@
 export function someGetter (state) {
 }
 */
-
 export function isLogged (state) {
   console.log(state)
   return state.logged
@@ -21,4 +20,10 @@ export function getUsername (state) {
 }
 export function getRole (state) {
   return state.role
+}
+export function isProfe (state) {
+  return state.role === 'profe'
+}
+export function isAlumne (state) {
+  return state.role === 'alumne'
 }

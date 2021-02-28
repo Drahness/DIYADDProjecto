@@ -2,7 +2,9 @@ import { api } from 'boot/axios'
 import { Notify } from 'quasar'
 
 export function logout (state) {
-
+  console.log('logout action')
+  state.commit('logout')
+  this.$router.push('/index')
 }
 
 export function login (state, form) {

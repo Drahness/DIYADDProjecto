@@ -17,7 +17,7 @@
                 </div>
                 <div class="row">
                   <q-input class="col-6" v-if="hasBody" v-model="body" filled type="textarea" autogrow label="Body"/>
-                  <q-input class="col-6" v-if="hasCustomConfig" v-model="config" filled type="jsonstr" autogrow label="Config"/>
+                  <q-input class="col-6" v-if="hasCustomConfig" v-model="config" filled type="textarea" autogrow label="Config"/>
                 </div>
                 <div class="row center">
                   <q-checkbox class="col-4" v-model="ssl" label="SSL" />

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="bg-primary glossy text-white">
         <q-btn
           flat
           dense
@@ -10,7 +10,6 @@
           aria-label="Menu"
           @click="drawerState = !drawerState"
         />
-
         <q-toolbar-title>
           Qualificacions App
         </q-toolbar-title>
@@ -27,36 +26,54 @@
       v-on:hide="drawerState = false"
     >
     <!-- Si no tienes v-on:hide asi hay un bug que tienes que darle click dos veces para sacar el drawer-->
-      <q-banner class="bg-primary text-white d-flex flex-row" v-if="isLogged">
-        <q-avatar class="rounded-borders " > <!-- size="64px"-->
-          <q-icon name="account_circle" />
-        </q-avatar >
-            {{ username }}
-      </q-banner>
 
-      <q-banner class="bg-primary text-white" v-else>
+    <!--
+      <q-banner class="bg-primary glossy text-white d-flex flex-row" v-if="isLogged">
+        <template v-slot:avatar>
+          <q-avatar class="rounded-borders " > size="64px"
+            <q-icon name="account_circle" />
+          </q-avatar >
+        </template >
+        <template v-slot:default>
+            {{ username }}<br>
+            <div style="color:white">{{ role }}</div>
+          </template >
       </q-banner>
+      <q-banner class="bg-primary glossy text-white" v-else>
+      </q-banner>
+    -->
+    <Banner v-if="isLogged"
+            :first_line="username"
+            :second_line="role"
+            :avatar="avatar"/>
+    <q-banner class="bg-primary glossy text-white" v-else>
 
+    </q-banner>
       <q-list>
         <q-item-label
           header
           class="text-grey-8"
         >
         </q-item-label>
-          <div v-if="!isLogged">
+<!--          <div v-if="!isLogged">
             <EssentialLink
-              v-for="link in unloggedL"
+              v-for="link in getBookmarks"
               :key="link.title"
               v-bind="link"
             />
           </div>
-          <div v-else>
+          -->
+          <div>
             <EssentialLink
-              v-for="link in loggedL"
+              v-for="link in getBookmarks"
               :key="link.title"
               v-bind="link"
             />
           </div>
+          <EssentialLink v-if="isLogged"
+          v-bind="data_logout"
+          v-on:click="logout()"
+          />
       </q-list>
     </q-drawer>
     <q-page-container>
@@ -67,60 +84,22 @@
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import Banner from 'components/Banner.vue'
 
-const unLoggedLinks = [
-  {
-    title: 'Login',
-    caption: '',
-    icon: 'login',
-    link: '#/login'
-  },
-  {
-    title: 'Registre',
-    caption: '',
-    icon: 'app_registration',
-    link: '#/register'
-  },
-  {
-    title: 'About',
-    caption: '',
-    icon: 'favorite',
-    link: '#/about'
-  }
-]
+const logout = {
+  title: 'Logout',
+  caption: '',
+  icon: 'logout',
+  link: ''
+}
 
-const loggedLinks = [
-  {
-    title: 'Notes',
-    caption: '',
-    icon: 'speaker_notes',
-    link: '#/notes'
-  }, {
-    title: 'Asignatures',
-    caption: '',
-    icon: 'book',
-    link: '#/asignatures'
-  }, {
-    title: 'Logout',
-    caption: '',
-    icon: 'logout',
-    link: '#/logout'
-  }, {
-    title: 'About',
-    caption: '',
-    icon: 'favorite',
-    link: '#/about'
-  }
-]
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
+  components: { EssentialLink, Banner },
   data () {
     return {
-      leftDrawerOpen: false,
-      essentialLink: unLoggedLinks,
-      unloggedL: unLoggedLinks,
-      loggedL: loggedLinks
+      leftDrawerOpen: true,
+      data_logout: logout
     }
   },
   computed: {
@@ -152,6 +131,88 @@ export default {
     },
     role () {
       return this.$store.getters['showcase/getRole']
+    },
+    isProfe () {
+      return this.$store.getters['showcase/isProfe']
+    },
+    isAlumne () {
+      return this.$store.getters['showcase/isAlumne']
+    },
+    getBookmarks () {
+      if (!this.isLogged) {
+        return [
+          {
+            title: 'Login',
+            caption: '',
+            icon: 'login',
+            link: '#/login'
+          },
+          {
+            title: 'Registre',
+            caption: '',
+            icon: 'app_registration',
+            link: '#/register'
+          },
+          {
+            title: 'About',
+            caption: '',
+            icon: 'favorite',
+            link: '#/about'
+          }
+        ]
+      } else if (this.isProfe) {
+        return [
+          {
+            title: 'Moduls',
+            caption: '',
+            icon: 'analytics',
+            link: '#/moduls'
+          }, {
+            title: 'Alumnes',
+            caption: '',
+            icon: 'sentiment_satisfied_alt',
+            link: '#/alumnes'
+          }, {
+            title: 'Asignatures',
+            caption: '',
+            icon: 'book',
+            link: '#/asignatures'
+          }, {
+            title: 'About',
+            caption: '',
+            icon: 'favorite',
+            link: '#/about'
+          }
+        ]
+      } else if (this.isAlumne) {
+        return [
+          {
+            title: 'Notes',
+            caption: '',
+            icon: 'speaker_notes',
+            link: '#/notes'
+          }, {
+            title: 'Asignatures',
+            caption: '',
+            icon: 'book',
+            link: '#/asignatures'
+          }, {
+            title: 'About',
+            caption: '',
+            icon: 'favorite',
+            link: '#/about'
+          }
+        ]
+      } else { // error
+        console.log('error in bookmarks MainLoayout.vue')
+        return []
+      }
+    }
+  },
+  methods: {
+    logout (event) {
+      console.log('logut')
+      this.$store.dispatch('showcase/logout')
     }
   }
 }

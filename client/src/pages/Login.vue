@@ -18,24 +18,35 @@
                 type="username"
                 label="Usuari"
                 :rules="[
-                  (val) =>
-                    (val.length != 0 && val.lastIndexOf(' ') == -1) ||
+                  (val) => (val.length != 0 && val.lastIndexOf(' ') == -1) ||
                     'Usuari no pot contindre espais.',
                 ]"
-              />
+              >
+              </q-input>
+
               <q-input
-                square
-                filled
-                clearable
-                v-model="password"
-                type="password"
-                label="Contrasenya"
-                :rules="[(val) => val.length != 0 || 'Contrasenya buida.']"
-              />
+                  square
+                  outlined
+                  filled
+                  clearable
+                  v-model="password"
+                  float-label="Password"
+                  :type="passwd_hide ? 'password' : 'text'" hint="Contrasenya"
+                  label="Contrasenya"
+                  :rules="[val => val != null || 'Contraseña no puede estar vacia']">
+                <template v-slot:append>
+                  <q-icon
+                      :name="passwd_hide ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="passwd_hide = !passwd_hide"
+                  />
+                </template>
+              </q-input>
               <q-card-actions class="q-px-md">
                 <q-btn
                   unelevated
-                  color="light-blue-7"
+                  glossy
+                  color="primary"
                   size="lg"
                   type="submit"
                   class="full-width"
@@ -61,7 +72,8 @@ export default {
   data () {
     return {
       username: '',
-      password: ''
+      password: '',
+      passwd_hide: true
     }
   },
   methods: {
