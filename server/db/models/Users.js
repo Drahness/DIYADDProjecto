@@ -114,7 +114,7 @@ class DAOUsers {
     check_user(user,password) {
         return new Promise((resolve ,reject ) => {
             let conn = this.mydb.getConnection();
-            let sql = "SELECT count(*) FROM users where username = ? AND password = ?";
+            let sql = "SELECT count(*) FROM users WHERE UPPER(username) = UPPER(?) AND password = ?";
             conn.query(sql,[user,password], function (err, results, fields) {
                 if (err) {
                     reject(err);
