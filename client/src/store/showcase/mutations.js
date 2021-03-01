@@ -22,3 +22,21 @@ export const logout = (state) => {
   state.avatar = ''
   state.logged = false
 }
+export const setAsignatures = (state, data) => {
+  state.asignatures = data
+}
+export const setModuls = (state, data) => {
+  state.moduls = data
+}
+export const setNotes = (state, data) => {
+  state.notes = data
+}
+export const actualizarAsignSync = (state) => {
+  state.lastSyncAsignatures = Date.now()
+}
+export const actualizarNotesSync = (state) => {
+  state.lastSyncNotes = Date.now()
+}
+export const actualizarModulsSync = (state) => {
+  state.lastSyncNotes = Date.now()
+}

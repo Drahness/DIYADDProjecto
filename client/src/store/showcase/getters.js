@@ -2,15 +2,14 @@
 export function someGetter (state) {
 }
 */
+export function getToken (state) {
+  return state.token
+}
 export function isLogged (state) {
-  console.log(state)
   return state.logged
 }
-export function isExpired (state) {
-  return false
-}
-export function getNotes (state) {
-  return false
+export function tokenExpiration (state) {
+  return state.tokenExpiresAt
 }
 export function getAvatar (state) {
   return state.avatar
@@ -26,4 +25,22 @@ export function isProfe (state) {
 }
 export function isAlumne (state) {
   return state.role === 'Alumne'
+}
+export function getAsignatures (state) {
+  return state.asignatures
+}
+export function getModuls (state) {
+  return state.moduls
+}
+export function getNotes (state) {
+  return state.notes
+}
+export function getLastSyncAsignatures (state) {
+  return state.lastSyncAsignatures
+}
+export function getLastSyncModuls (state) {
+  return state.lastSyncModuls
+}
+export function getLastSyncNotes (state) {
+  return state.lastSyncNotes
 }

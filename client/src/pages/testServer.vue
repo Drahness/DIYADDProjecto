@@ -50,7 +50,7 @@
 import { api } from 'boot/axios'
 
 export default {
-  name: 'Login',
+  name: 'Testings',
   data () {
     return {
       options: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD', 'OPTIONS', 'PATCH'],

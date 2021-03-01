@@ -5,8 +5,15 @@ export default function () {
     refreshToken: '',
     role: '',
     token: '',
+    tokenExpiresAt: 0,
     avatar: '',
-    registered: false,
-    logged: false
+    logged: false,
+    asignatures: [],
+    lastSyncAsignatures: 0,
+    moduls: [],
+    lastSyncModuls: 0,
+    notes: [],
+    lastSyncNotes: 0
+
   }
 }

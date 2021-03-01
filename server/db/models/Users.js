@@ -14,7 +14,7 @@ class DAOUsers {
     getByUsername(username) {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
-            let sql = "SELECT * FROM docencia.users where username = ?";
+            let sql = "SELECT * FROM docencia.users where UPPER(username) = UPPER(?)";
             conn.query(sql,[username], function (err, results) {
                 if (err) {
                     reject(err);

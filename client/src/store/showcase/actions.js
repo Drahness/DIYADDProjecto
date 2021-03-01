@@ -75,3 +75,74 @@ export function register (store, form) {
       })
     })
 }
+
+export function getAsignatures (store) {
+  api
+    .get('https://localhost:1234/asignatures',
+      {
+        headers: {
+          Authorization: 'Bearer ' + store.getters.getToken
+        }
+      })
+    .then((results) => {
+      if (results.data.ok) {
+        store.commit('setAsignatures', results.data.data)
+        store.commit('actualizarAsignSync')
+      } else {
+        Notify.create({
+          type: 'negative',
+          message: 'Ha salido algo mal con el servidor ' + results.data.data
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err, 'error')
+    })
+}
+export function getNotes (store) {
+  api
+    .get('https://localhost:1234/notes',
+      {
+        headers: {
+          Authorization: 'Bearer ' + store.getters.getToken
+        }
+      })
+    .then((results) => {
+      if (results.data.ok) {
+        store.commit('setNotes', results.data.data)
+        store.commit('actualizarNotesSync')
+      } else {
+        Notify.create({
+          type: 'negative',
+          message: 'Ha salido algo mal con el servidor: ' + results.data.data
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err, 'error')
+    })
+}
+export function getModuls (store) {
+  api
+    .get('https://localhost:1234/moduls',
+      {
+        headers: {
+          Authorization: 'Bearer ' + store.getters.getToken
+        }
+      })
+    .then((results) => {
+      if (results.data.ok) {
+        console.log(results, 'results')
+        store.commit('setModuls', results.data.data)
+        store.commit('actualizarModulsSync')
+      } else {
+        Notify.create({
+          type: 'negative',
+          message: 'Ha salido algo mal con el servidor:' + results.data.data
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err, 'error')
+    })
+}

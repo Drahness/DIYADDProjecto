@@ -1,23 +1,26 @@
 const jwt = require("jsonwebtoken");
-
-
 const accessTokenSecret = "laParaulaSecretaDelServidor";
 const refreshTokenSecret = "laParaulaSecretaDelServidorDeRefrescosCocacolaloco"
 const refreshers = []
-
-const tokenChecker = (req, res, next) => {
-    const authHeader = req.headers.authorization;
+/**
+ * @param {*} request 
+ * @param {*} response 
+ * @param {*} next next function
+ */
+const tokenChecker = (request, response, next) => {
+    const authHeader = request.headers.authorization;
     if (authHeader) {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, accessTokenSecret, (err, user) => {
             if (err) {
-                return res.sendStatus(403);
+                console.log(authHeader)
+                return response.sendStatus(403);
             }
-            req.user = user; // afegim a la petició les dades que venien en el jwt user
+            request.user = user; // afegim a la petició les dades que venien en el jwt user
             next(); // next middleware
         });
     } else {
-        res.sendStatus(401); // 401(unauthorized);
+        response.sendStatus(401); // 401(unauthorized);
     }
 };
 /**
@@ -45,7 +48,7 @@ const refreshCheck = (tokenRefresher) => {
 /**
  * Returns a new token of the refresher
  */
-const refreshToken = (tokenRefresher) {
+const refreshToken = (tokenRefresher) => {
     return new Promise((resolve, reject) => {
         if(this.refreshCheck(tokenRefresher)) {
             jwt.verify(refreshToken, this.refreshSecret, (err, payload) => {
@@ -59,7 +62,7 @@ const refreshToken = (tokenRefresher) {
                 }
             })
         } else {
-            reject("Not autorized") // idont know what to put here
+            reject({ ok:true, data:"Not autorized" }) // idont know what to put here
         }
     })
 }
