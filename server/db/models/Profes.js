@@ -153,7 +153,8 @@ class DAOProfes extends DAOUsers {
 
 
 module.exports = {
-    DAO: DAOProfes
+    DAO: DAOProfes,
+    ROLE: "Professor"
 }
 
 

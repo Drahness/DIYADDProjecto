@@ -9,7 +9,7 @@ router.use(bodyParser.json()) // middleware
 
 router.get("/", token.tokenCheck, (request,response) => {
     let DAO; 
-    if(request.user.role == "profe") {
+    if(request.user.role == profeDao.ROLE) {
         DAO = new profeDao.DAO()
     } else {
         DAO = new alumneDao.DAO()
@@ -45,7 +45,7 @@ router.get("/", token.tokenCheck, (request,response) => {
 router.get("/:id", token.tokenCheck , (request,response) => {
     let DAO; 
     const id_assignatura = request.params.id
-    if(request.user.role == "profe") {
+    if(request.user.role == profeDao.ROLE) {
         DAO = new profeDao.DAO()
     } else {
         DAO = new alumneDao.DAO()

@@ -5,7 +5,7 @@ const UsersModel = require("./../db/models/Users")
 const ProfeModel = require("./../db/models/Profes")
 const MD5 = require('md5');
 const { response } = require("express");
-const emitter = token.tokenEmitter
+const Alumnes = require("../db/models/Alumnes");
 
 const daoInstanceUser = new UsersModel.DAO()
 const daoInstanceProfe = new ProfeModel.DAO()
@@ -50,7 +50,7 @@ router.post("/",(req,res) => { // It works
         const accessToken = token.tokenEmitter({ 
             username: userTrying.username,
             user_id: userTrying.id,
-            role: isProfe ? "profe" : "alumne",
+            role: isProfe ? ProfeModel.ROLE : Alumnes.ROLE,
         });
         res.status(200)
         res.json({
@@ -64,7 +64,7 @@ router.post("/",(req,res) => { // It works
     })
     .catch((err) => {
         console.log(err)
-        if(response.headersSent) {
+        if(!response.headersSent) {
             res.status(500)
             res.send({
                 ok:false,

@@ -22,8 +22,8 @@ export function getRole (state) {
   return state.role
 }
 export function isProfe (state) {
-  return state.role === 'profe'
+  return state.role === 'Professor'
 }
 export function isAlumne (state) {
-  return state.role === 'alumne'
+  return state.role === 'Alumne'
 }

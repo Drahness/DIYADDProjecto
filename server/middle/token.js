@@ -20,6 +20,10 @@ const tokenChecker = (req, res, next) => {
         res.sendStatus(401); // 401(unauthorized);
     }
 };
+/**
+ * Returns a map of token and refreshToken
+ * @param {*} payload the JSON of the things inside the token
+ */
 
 const tokenEmitter = (payload) => {
     const token = jwt.sign(
@@ -34,7 +38,31 @@ const tokenEmitter = (payload) => {
     refreshers.push(refreshToken);
     return {token,refreshToken};
 }
+const refreshCheck = (tokenRefresher) => {
+    return refreshers.findIndex((obj) => obj === tokenRefresher) != -1 
+}
 
+/**
+ * Returns a new token of the refresher
+ */
+const refreshToken = (tokenRefresher) {
+    return new Promise((resolve, reject) => {
+        if(this.refreshCheck(tokenRefresher)) {
+            jwt.verify(refreshToken, this.refreshSecret, (err, payload) => {
+                if (err) {
+                    reject(err)
+                }
+                else {
+                    resolve(jwt.sign(   payload,
+                                        accessTokenSecret,
+                                        { expiresIn: '20m' }))
+                }
+            })
+        } else {
+            reject("Not autorized") // idont know what to put here
+        }
+    })
+}
 
 const onlyProfes = (req, res, next) => {
     const requirement = require("../db/models/Profes")
@@ -73,10 +101,13 @@ const onlyAlumnes = (req, res, next) => {
             }
         })
 }
+
 exports.sign = jwt.sign
 exports.tokenCheck = tokenChecker
 exports.tokenEmitter = tokenEmitter
 exports.secret = accessTokenSecret
 exports.refreshSecret = refreshTokenSecret
+exports.refreshToken = refreshToken
+exports.refreshCheck = refreshCheck
 exports.onlyProfes = onlyProfes
 exports.onlyAlumnes = onlyAlumnes

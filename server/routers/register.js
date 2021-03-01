@@ -2,14 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const md5 = require('md5')
 const token = require("./../middle/token");
-const UsersModel = require("./../db/models/Users");
-const ProfeModel = require("./../db/models/Profes");
-const AlumneModel = require("./../db/models/Alumnes");
-
+const profeDAO = require("./../db/models/Profes");
+const alumneDAO = require("./../db/models/Alumnes");
 const router = express.Router();
-const daoInstanceUser = new UsersModel.DAO();
-const daoInstanceProfe = new ProfeModel.DAO();
-const daoInstanceAlumne = new AlumneModel.DAO();
+const daoInstanceProfe = new profeDAO.DAO();
+const daoInstanceAlumne = new alumneDAO.DAO();
 const emitter = token.tokenEmitter;
 
 router.use(bodyParser.json()); // middleware
@@ -42,7 +39,7 @@ router.post("/", (req, res) => {
       .then((isProfe) => {
         //console.log(isProfe)
         if (isProfe) {
-          role = "profe";
+          role = profeDAO.ROLE;
           return daoInstanceProfe.insert({
             username: username,
             password: encriptedPassword,
@@ -50,7 +47,7 @@ router.post("/", (req, res) => {
             avatar: avatar,
           });
         } else {
-          role = "alumne";
+          role = alumneDAO.ROLE;
           return daoInstanceAlumne.insert({
             username: username,
             password: encriptedPassword,

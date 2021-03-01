@@ -154,5 +154,6 @@ DA.isAlumne("Ambros").then((res) => console.log(res)).catch((err) => console.log
 DA.insert({username:"Alumne1",password:"asdas",full_name:"Alumnes1Full",repetidor:true,curs:1}).then((res) => console.log(res)).catch((err) => console.log(err))
 DA.insert({username:"Alumne1",password:"asdas",full_name:"Alumnes1Full",repetidor:false,curs:1}).then((res) => console.log(res)).catch((err) => console.log(err))*/
 module.exports = {
-    DAO: DAOAlumnes
+    DAO: DAOAlumnes,
+    ROLE: "Alumne"
 }
