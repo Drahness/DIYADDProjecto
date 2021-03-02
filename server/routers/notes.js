@@ -32,13 +32,17 @@ router.get("/", token.tokenCheck, token.onlyAlumnes, (request, response) => {
 router.get("/:id", token.tokenCheck, token.onlyAlumnes, (request, response) => {
   const DAO = new daoAlumne.DAO()
   DAO.getNotes(request.user.user_id).then((res) => {
-      let result = res[request.params.id]
-      let notaConcreta = {} 
-      notaConcreta.id_assig = result.id_assig,
-      notaConcreta.cod_assig = result.cod_assig,
-      notaConcreta.nom_assig = result.nota,
-      notaConcreta.link = {
-          get:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/assignatura/"+result.id_assig
+      console.log(res)
+      let result = res.filter((obj) => obj.id_assig == request.params.id)[0] // o sale 1 o salen 0
+      let notaConcreta = {}
+      if(result) {
+            // let result = res[request.params.id]
+            notaConcreta.id_assig = result.id_assig,
+            notaConcreta.cod_assig = result.cod_assig,
+            notaConcreta.nom_assig = result.nota,
+            notaConcreta.link = {
+                get:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/assignatura/"+result.id_assig
+            }
       }
       response.send({ok:true,
                   data: notaConcreta})
