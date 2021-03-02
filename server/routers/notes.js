@@ -13,7 +13,7 @@ router.get("/", token.tokenCheck, token.onlyAlumnes, (request, response) => {
           moduls.push({
               id_assig: object.id_assig,
               cod_assig: object.cod_assig,
-              nom_assig: object.nota,
+              nota: object.nota,
               link: {
                   get:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/assignatura/"+object.id_assig
               }

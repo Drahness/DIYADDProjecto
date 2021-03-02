@@ -178,6 +178,11 @@ export default {
             icon: 'book',
             link: '#/asignatures'
           }, {
+            title: 'Notes',
+            caption: '',
+            icon: 'speaker_notes',
+            link: '#/notes'
+          }, {
             title: 'About',
             caption: '',
             icon: 'favorite',

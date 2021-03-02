@@ -118,7 +118,10 @@ class DAOProfes extends DAOUsers {
             let conn = this.mydb.getConnection();
             let sql = "SELECT * FROM docencia.professor profes "+
             " right join docencia.notes notes on notes.id_profe = profes.id_professor "+
-            " left join docencia.assignatura asig on  asig.id_assig = notes.id_assig where id_professor = ? "
+            " left join docencia.assignatura asig on asig.id_assig = notes.id_assig" +
+            " left join docencia.alumne alu on notes.id_alumne = alu.id_alumne " + 
+            " left join docencia.users users on alu.id_alumne = users.id " +
+            " where id_professor = ? "
             conn.query(sql,[id], function (err,results) {
                 if(err) {
                     reject(err)

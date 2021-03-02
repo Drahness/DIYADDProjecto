@@ -43,12 +43,11 @@ router.get("/:id", token.tokenCheck ,token.onlyProfes, (request,response) => { /
                 ok:true, 
                 data:
                 {
+                    id_alumne: object.id_alumne,
+                    full_name: object.full_name,
                     id_assig: object.id_assig,
                     cod_assig: object.cod_assig,
-                    nom_assig: object.nom_assig,
-                    modul: object.modul,
-                    curs: object.curs,
-                    hores: object.hores,
+                    nota: object.nota,
                     link: {
                         assig:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/asignatures/"+object.id_assig,
                         alumne:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/alumne/"+object.id_alumne,

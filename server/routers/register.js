@@ -2,11 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const md5 = require('md5')
 const token = require("./../middle/token");
+const UserDAO = require('./../db/models/Users')
 const profeDAO = require("./../db/models/Profes");
 const alumneDAO = require("./../db/models/Alumnes");
 const router = express.Router();
 const daoInstanceProfe = new profeDAO.DAO();
 const daoInstanceAlumne = new alumneDAO.DAO();
+const daoInstanceUser = new UserDAO.DAO()
 const emitter = token.tokenEmitter;
 
 router.use(bodyParser.json()); // middleware
@@ -22,8 +24,7 @@ router.post("/", (req, res) => {
     !(password === "" || password == undefined)
   ) {
     const encriptedPassword = md5(password)
-    daoInstanceUser
-      .getByUsername(username)
+    daoInstanceUser.getByUsername(username)
       .then((exists) => {
         if (!exists) {
           // not exists

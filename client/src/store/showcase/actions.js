@@ -76,7 +76,7 @@ export function register (store, form) {
     })
 }
 
-export function getAsignatures (store) {
+export function getAsignaturesFromServer (store) {
   api
     .get('https://localhost:1234/asignatures',
       {
@@ -99,7 +99,7 @@ export function getAsignatures (store) {
       console.log(err, 'error')
     })
 }
-export function getNotes (store) {
+export function getNotesFromServer (store) {
   api
     .get('https://localhost:1234/notes',
       {
@@ -122,7 +122,7 @@ export function getNotes (store) {
       console.log(err, 'error')
     })
 }
-export function getModuls (store) {
+export function getModulsFromServer (store) {
   api
     .get('https://localhost:1234/moduls',
       {

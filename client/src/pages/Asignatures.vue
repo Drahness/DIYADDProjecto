@@ -13,17 +13,14 @@
 
     </div>
     <div>
-       <q-list highlight>
-        <div >
+      <q-list separator highlight>
+        <div>
           <q-item clickable v-ripple></q-item>
-            <q-item clickable v-ripple v-for="asignatura in getAsignatures" :key="asignatura">
-                <q-item-main>
-                    <q-item-tile label>{{asignatura.nom_assig}}</q-item-tile>
-                    <q-item-tile sublabel>R${{asignatura.id_assig}}</q-item-tile>
-                </q-item-main>
+            <q-item clickable v-ripple v-for="asignatura in getAsignatures" :key="asignatura.id_assig">
+              <q-item-label>{{asignatura.nom_assig}}</q-item-label>
             </q-item>
         </div>
-    </q-list>
+      </q-list>
     </div>
     <div>
       bbbb
@@ -38,23 +35,20 @@
 export default {
   name: 'Asignatures',
   computed: {
+    getAsignSync () {
+      return this.$store.getters['showcase/getLastSyncAsignatures']
+    },
     getAsignatures () {
       console.log('comp getAsignatures')
-      const asig = this.$store.dispatch('showcase/getAsignatures')
-      /* if (asig.lenght === 0) {
-        asig = this.$store.getters('showcase/getAsignatures')
-      } */
-      return asig
+      if (this.getAsignSync < Date.now() - 500000) {
+        this.$store.dispatch('showcase/getAsignaturesFromServer')
+      }
+      return this.$store.getters['showcase/getAsignatures']
     }
   },
   methods: {
     mgetAsignatures () {
-      console.log('mgetAsignatures')
-      const asig = this.$store.dispatch('showcase/getAsignatures')
-      /* if (asig.lenght === 0) {
-        asig = this.$store.getters('showcase/getAsignatures')
-      } */
-      return asig
+
     }
   }
 }
