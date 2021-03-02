@@ -13,8 +13,6 @@
         <q-toolbar-title>
           Qualificacions App
         </q-toolbar-title>
-        <!-- Aqui abajo la data en valenciano
-        // Dimecres, 16 de Febrer de 2021 -->
         <div>{{ getDateCat }}</div>
       </q-toolbar>
     </q-header>
@@ -26,28 +24,11 @@
       v-on:hide="drawerState = false"
     >
     <!-- Si no tienes v-on:hide asi hay un bug que tienes que darle click dos veces para sacar el drawer-->
-
-    <!--
-      <q-banner class="bg-primary glossy text-white d-flex flex-row" v-if="isLogged">
-        <template v-slot:avatar>
-          <q-avatar class="rounded-borders " > size="64px"
-            <q-icon name="account_circle" />
-          </q-avatar >
-        </template >
-        <template v-slot:default>
-            {{ username }}<br>
-            <div style="color:white">{{ role }}</div>
-          </template >
-      </q-banner>
-      <q-banner class="bg-primary glossy text-white" v-else>
-      </q-banner>
-    -->
     <Banner v-if="isLogged"
             :first_line="username"
             :second_line="role"
             :avatar="avatar"/>
     <q-banner class="bg-primary glossy text-white" v-else>
-
     </q-banner>
       <q-list>
         <q-item-label
@@ -55,14 +36,6 @@
           class="text-grey-8"
         >
         </q-item-label>
-<!--          <div v-if="!isLogged">
-            <EssentialLink
-              v-for="link in getBookmarks"
-              :key="link.title"
-              v-bind="link"
-            />
-          </div>
-          -->
           <div>
             <EssentialLink
               v-for="link in getBookmarks"
@@ -177,11 +150,6 @@ export default {
             caption: '',
             icon: 'book',
             link: '#/asignatures'
-          }, {
-            title: 'Notes',
-            caption: '',
-            icon: 'speaker_notes',
-            link: '#/notes'
           }, {
             title: 'About',
             caption: '',

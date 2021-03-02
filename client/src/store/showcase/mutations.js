@@ -3,13 +3,13 @@ import jwt from 'jsonwebtoken'
 export const updateDrawerState = (state, opened) => {
   state.drawerState = opened
 }
-export const updateCredentialsState = (state, newCredentials) => {
-  state.credentials = newCredentials
-}
+
 export const doLogin = (state, response) => {
+  const decoded = jwt.decode(response.data.accessToken.token)
   state.token = response.data.accessToken.token
-  state.username = jwt.decode(response.data.accessToken.token).username
-  state.role = jwt.decode(response.data.accessToken.token).role
+  state.username = decoded.username
+  state.role = decoded.role
+  state.exp = decoded.exp
   state.refreshToken = response.data.accessToken.refreshToken
   state.avatar = response.data.avatar
   state.logged = true
@@ -21,6 +21,19 @@ export const logout = (state) => {
   state.token = ''
   state.avatar = ''
   state.logged = false
+  state.exp = 0
+}
+export const setToken = (state, data) => {
+  console.log('setting token')
+  state.token = data
+  const exp = jwt.decode(data).exp
+  if (exp) {
+    console.log('setting exp', exp)
+    state.exp = exp
+  } else {
+    console.log('elseing maxValue')
+    state.exp = Number.MAX_VALUE
+  }
 }
 export const setAsignatures = (state, data) => {
   state.asignatures = data

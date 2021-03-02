@@ -13,7 +13,7 @@ export default function () {
     moduls: [],
     lastSyncModuls: 0,
     notes: [],
-    lastSyncNotes: 0
-
+    lastSyncNotes: 0,
+    exp: 0
   }
 }

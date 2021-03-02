@@ -2,14 +2,42 @@ import { api } from 'boot/axios'
 import { Notify } from 'quasar'
 
 export function logout (state) {
-  console.log('logout action')
   state.commit('logout')
   this.$router.push('/index')
+}
+// 1614705346.229 1614705139
+export function refreshToken (store) {
+  console.log('dispatching refreshToken', Date.now() / 1000, store.getters.tokenExp)
+  if (store.getters.tokenExp <= Date.now() / 1000) {
+    console.log('refreshing tokenExp')
+    api.post('/refresh', { token: store.getters.getRefreshToken })
+      .then((result) => {
+        if (result.data.ok) {
+          store.commit('setToken', result.data.data)
+        } else {
+          Notify.create(
+            {
+              type: 'negative',
+              message: result.data.data
+            }
+          )
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        Notify.create(
+          {
+            type: 'negative',
+            message: error
+          }
+        )
+      })
+  }
 }
 
 export function login (state, form) {
   api
-    .post('https://localhost:1234/login', { username: form.username, password: form.password })
+    .post('/login', { username: form.username, password: form.password })
     .then((response) => {
       if (response.data.ok) {
         state.commit('doLogin', response.data)
@@ -42,7 +70,7 @@ export function login (state, form) {
 
 export function register (store, form) {
   api
-    .post('https://localhost:1234/register', {
+    .post('/register', {
       username: form.username,
       password: form.password,
       full_name: form.full_name,
@@ -77,8 +105,9 @@ export function register (store, form) {
 }
 
 export function getAsignaturesFromServer (store) {
+  store.dispatch('refreshToken')
   api
-    .get('https://localhost:1234/asignatures',
+    .get('asignatures',
       {
         headers: {
           Authorization: 'Bearer ' + store.getters.getToken
@@ -100,8 +129,9 @@ export function getAsignaturesFromServer (store) {
     })
 }
 export function getNotesFromServer (store) {
+  store.dispatch('refreshToken')
   api
-    .get('https://localhost:1234/notes',
+    .get('/notes',
       {
         headers: {
           Authorization: 'Bearer ' + store.getters.getToken
@@ -123,8 +153,9 @@ export function getNotesFromServer (store) {
     })
 }
 export function getModulsFromServer (store) {
+  store.dispatch('refreshToken')
   api
-    .get('https://localhost:1234/moduls',
+    .get('/moduls',
       {
         headers: {
           Authorization: 'Bearer ' + store.getters.getToken

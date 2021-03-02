@@ -8,7 +8,8 @@ const moduls = require("./routers/moduls")
 const fs = require("fs");
 const https = require("https");
 const cors = require('cors')
-const bodyParser = require("body-parser");
+const { token } = require("./middle/token");
+const tokenRoute = require("./routers/token")
 const port = 1234;
 
 app.use(cors())
@@ -25,8 +26,8 @@ https
 app.use("/login", login.router)
 app.use("/register", register.router)
 app.use("/notes", notes.router)
-app.use("/asignatures",asignatures.router)
-app.use("/moduls",moduls.router)
-
+app.use("/asignatures", asignatures.router)
+app.use("/moduls", moduls.router)
+app.use("/refresh", tokenRoute.router)
 
 exports.port = port

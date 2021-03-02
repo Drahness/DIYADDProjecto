@@ -4,8 +4,8 @@ export function getToken (state) {
 export function isLogged (state) {
   return state.logged
 }
-export function tokenExpiration (state) {
-  return state.tokenExpiresAt
+export function tokenExp (state) {
+  return state.exp
 }
 export function getAvatar (state) {
   return state.avatar
@@ -39,4 +39,7 @@ export function getLastSyncModuls (state) {
 }
 export function getLastSyncNotes (state) {
   return state.lastSyncNotes
+}
+export function getRefreshToken (state) {
+  return state.refreshToken
 }

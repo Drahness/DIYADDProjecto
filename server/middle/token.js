@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const accessTokenSecret = "laParaulaSecretaDelServidor";
 const refreshTokenSecret = "laParaulaSecretaDelServidorDeRefrescosCocacolaloco"
 const refreshers = []
+const expirationTime = '3m'
 /**
  * @param {*} request 
  * @param {*} response 
@@ -13,7 +14,7 @@ const tokenChecker = (request, response, next) => {
         const token = authHeader.split(" ")[1];
         jwt.verify(token, accessTokenSecret, (err, user) => {
             if (err) {
-                console.log(authHeader)
+                console.log(authHeader,"error")
                 return response.sendStatus(403);
             }
             request.user = user; // afegim a la petició les dades que venien en el jwt user
@@ -32,7 +33,7 @@ const tokenEmitter = (payload) => {
     const token = jwt.sign(
         payload,
         accessTokenSecret,
-        { expiresIn: '20m' }
+        { expiresIn: expirationTime }
     );
     const refreshToken = jwt.sign(
         payload,
@@ -51,14 +52,16 @@ const refreshCheck = (tokenRefresher) => {
 const refreshToken = (tokenRefresher) => {
     return new Promise((resolve, reject) => {
         if(this.refreshCheck(tokenRefresher)) {
-            jwt.verify(refreshToken, this.refreshSecret, (err, payload) => {
+            jwt.verify(tokenRefresher, this.refreshSecret, (err, payload) => {
+                delete payload.iat // Necesario, si no, devuelve siempre el mismo lol.
                 if (err) {
                     reject(err)
                 }
                 else {
+                    console.log('resolving')
                     resolve(jwt.sign(   payload,
                                         accessTokenSecret,
-                                        { expiresIn: '20m' }))
+                                        { expiresIn: expirationTime }))
                 }
             })
         } else {
