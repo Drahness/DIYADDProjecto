@@ -31,29 +31,31 @@ router.get("/", token.tokenCheck,token.onlyProfes, (request,response) => {
 })
 
 router.get("/:id", token.tokenCheck ,token.onlyProfes, (request,response) => { // id asignatura
-    console.log("get moduls.js")
     const idModule = request.params.id
     const DAO = new daoprofes.DAO()
-    DAO.getAsignatures(request.user.user_id)
+    DAO.getAsignaturaDetalls(request.user.user_id,idModule)
     .then((res) => {
-        let object = res.filter((json) => idModule == json.id_assig)[0]
+        let object = []
+        res.forEach((instance) => {
+            console.log(instance)
+            object.push({
+                id_alumne: instance.id_alumne,
+                full_name: instance.full_name,
+                id_assig: instance.id_assig,
+                cod_assig: instance.cod_assig,
+                nota: instance.nota,
+                link: {
+                    assig:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/asignatures/"+instance.id_assig,
+                    alumne:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/alumne/"+instance.id_alumne,
+                    nota: "PUT https://"+request.socket.localAddress+":"+request.socket.localPort+"/moduls/"+instance.id_assig+"/"+instance.id_alumne
+                }
+            })
+        })
         if(object) {
             response.status(200)
             response.send({
                 ok:true, 
-                data:
-                {
-                    id_alumne: object.id_alumne,
-                    full_name: object.full_name,
-                    id_assig: object.id_assig,
-                    cod_assig: object.cod_assig,
-                    nota: object.nota,
-                    link: {
-                        assig:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/asignatures/"+object.id_assig,
-                        alumne:"GET https://"+request.socket.localAddress+":"+request.socket.localPort+"/alumne/"+object.id_alumne,
-                        nota: "PUT https://"+request.socket.localAddress+":"+request.socket.localPort+"/moduls/"+object.id_assig+"/"+object.id_alumne
-                    }
-                }
+                data:object
             })
         }
         else {

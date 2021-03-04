@@ -116,11 +116,9 @@ class DAOProfes extends DAOUsers {
     getAsignatures(id) {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
-            let sql = "SELECT * FROM docencia.professor profes "+
-            " right join docencia.notes notes on notes.id_profe = profes.id_professor "+
-            " left join docencia.assignatura asig on asig.id_assig = notes.id_assig" +
-            " left join docencia.alumne alu on notes.id_alumne = alu.id_alumne " + 
-            " left join docencia.users users on alu.id_alumne = users.id " +
+            let sql = " SELECT DISTINCT profes.*, asig.*, notes.id_assig, notes.id_profe  FROM docencia.professor profes " +
+            " left join docencia.notes notes on notes.id_profe = profes.id_professor " +
+            " left join docencia.assignatura asig on asig.id_assig = notes.id_assig " +
             " where id_professor = ? "
             conn.query(sql,[id], function (err,results) {
                 if(err) {
@@ -138,8 +136,10 @@ class DAOProfes extends DAOUsers {
         return new Promise((resolve, reject) => {
             let conn = this.mydb.getConnection();
             let sql = "SELECT * FROM docencia.assignatura asign "+
-            " right join docencia.notes notes on notes.id_assig = asign.id_assig"+
+            " right join docencia.notes notes on notes.id_assig = asign.id_assig "+
             " right join docencia.users us on notes.id_alumne = us.id " +
+            " left join docencia.alumne alu on notes.id_alumne = alu.id_alumne " + 
+            " left join docencia.users users on alu.id_alumne = users.id " +
             " where id_profe = ? AND notes.id_assig = ?"
             conn.query(sql,[id,id_assig], (err, results) => {
                 if(err) {

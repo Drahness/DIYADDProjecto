@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const accessTokenSecret = "laParaulaSecretaDelServidor";
 const refreshTokenSecret = "laParaulaSecretaDelServidorDeRefrescosCocacolaloco"
 const refreshers = []
-const expirationTime = '3m'
+const expirationTime = '20m'
 /**
  * @param {*} request 
  * @param {*} response 
@@ -76,10 +76,8 @@ const onlyProfes = (req, res, next) => {
     DAO.is(req.user.username)
         .then((is) => {
             if(is) {
-                console.log("profe next")
                 next()
             } else {
-                console.log("forbidden")
                 res.status(401)
                 res.send({
                     ok: false,
@@ -95,10 +93,8 @@ const onlyAlumnes = (req, res, next) => {
     DAO.is(req.user.username)
         .then((is) => {
             if(is) {
-                console.log("alumne next")
                 next()
             } else {
-                console.log("forbidden")
                 res.status(401)
                 res.send({
                     ok: false,
